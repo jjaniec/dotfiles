@@ -1,4 +1,4 @@
-. ~/dotfiles/z/z.sh
+zsh /dotfiles/zsh/scripts/z.sh
 
 autoload -U promptinit; promptinit
 prompt pure
