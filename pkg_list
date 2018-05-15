@@ -1,0 +1,45 @@
+# '###' Category name
+# '#' Comment / Sub-category
+# '-' Dependency of previous element
+
+### Essentials ###
+community/bbswitch #(https://wiki.archlinux.org/index.php/Xiaomi_Mi_Notebook_Air_13.3_(2016))
+community/tlp
+extra/networkmanager
+
+### Develop ###
+extra/valgrind
+community/docker
+aur/code
+aur/gitkraken
+git/https://github.com/SpaceVim/SpaceVim.git
+
+### dm - de/wm - unixporn ###
+# DM
+extra/lightdm
+- aur/lightdm-webkit2-greeter
+- aur/lightdm-webkit2-theme-material2
+# DE/wm
+community/i3-gaps
+- community/i3blocks
+# unixporn
+community/compton
+- aur/compton-conf
+community/rofi
+
+### InfoSec ###
+extra/bind
+extra/nmap
+community/ettercap
+community/hping
+aur/wireshark-gtk2
+git/https://github.com/x90skysn3k/brutespray.git
+
+### Other ###
+# usefull tui tools
+community/ranger
+community/ncdu
+# other
+community/ansible
+- community/ansible-lint
+aur/spotify
