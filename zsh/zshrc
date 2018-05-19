@@ -1,10 +1,22 @@
 DOTFILES_DIR=/dotfiles/zsh
 
 source $DOTFILES_DIR/antigen.zsh
-zsh $DOTFILES_DIR/scripts/z.sh
 
 autoload -U promptinit; promptinit
 prompt pure
 
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle supercrabtree/k
+antigen bundle eendroroy/zed-zsh
+
+antigen apply
+
 git config --global user.email "jjaniec@student.42.fr"
 git config --global user.name "Joffrey Janiec"
+
+zstyle ':notify:*' error-icon "https://media3.giphy.com/media/10ECejNtM1GyRy/200_s.gif"
+zstyle ':notify:*' error-title "wow such #fail"
+zstyle ':notify:*' success-icon "https://s-media-cache-ak0.pinimg.com/564x/b5/5a/18/b55a1805f5650495a74202279036ecd2.jpg"
+zstyle ':notify:*' success-title "very #success. wow"
+
+source $DOTFILES_DIR/.antigen/bundles/marzocchi/zsh-notify/notify.plugin.zsh
