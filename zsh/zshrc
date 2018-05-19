@@ -1,4 +1,7 @@
-zsh /dotfiles/zsh/scripts/z.sh
+DOTFILES_DIR=/dotfiles/zsh
+
+source $DOTFILES_DIR/antigen.zsh
+zsh $DOTFILES_DIR/scripts/z.sh
 
 autoload -U promptinit; promptinit
 prompt pure

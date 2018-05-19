@@ -1,0 +1,6 @@
+[submodule "zsh/.antigen/bundles/supercrabtree/k"]
+	path = zsh/.antigen/bundles/supercrabtree/k
+	url = https://github.com/supercrabtree/k
+[submodule "zsh/.antigen/bundles/zsh-users/zsh-syntax-highlighting"]
+	path = zsh/.antigen/bundles/zsh-users/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
