@@ -1,8 +1,10 @@
-DOTFILES_DIR=/dotfiles/zsh
+export DOTFILES_DIR=/dotfiles
 
-source $DOTFILES_DIR/antigen.zsh
+#### Antigen plugins ####
 
-antigen bundle zsh-users/zsh-syntax-highlighting
+source $DOTFILES_DIR/zsh/antigen.zsh
+
+antigen bundle zdharma/fast-syntax-highlighting
 antigen bundle supercrabtree/k
 antigen bundle eendroroy/zed-zsh
 antigen bundle zsh-users/zsh-autosuggestions
@@ -10,7 +12,19 @@ antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle mafredri/zsh-async
 antigen bundle sindresorhus/pure
 
+#antigen bundle sobolevn/wakatime-zsh-plugin
+
 antigen apply
+
+#### Git config ####
 
 git config --global user.email "jjaniec@student.42.fr"
 git config --global user.name "Joffrey Janiec"
+
+#### Aliases and exports ####
+
+#export WAKATIME_HOME=$DOTFILES_DIR/zsh/.wakatime.cfg
+
+alias ls='k'
+
+#### Scripts ####
