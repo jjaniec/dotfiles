@@ -25,6 +25,6 @@ git config --global user.name "Joffrey Janiec"
 
 #export WAKATIME_HOME=$DOTFILES_DIR/zsh/.wakatime.cfg
 
-alias ls='k'
+#alias ls='k'
 
 #### Scripts ####
