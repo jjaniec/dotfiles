@@ -12,6 +12,7 @@ extra/valgrind
 community/docker
 aur/code
 aur/gitkraken
+git/https://github.com/zsh-users/antigen.git
 git/https://github.com/SpaceVim/SpaceVim.git
 
 ### dm - de/wm - unixporn ###
