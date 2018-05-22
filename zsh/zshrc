@@ -21,6 +21,14 @@ antigen apply
 git config --global user.email "jjaniec@student.42.fr"
 git config --global user.name "Joffrey Janiec"
 
+if [ "$(uname -s)" = "Linux" ];
+then
+	git config --global credential.helper cache;
+else
+	git config --global credential.helper osxkeychain;
+fi;
+
+
 #### Aliases and exports ####
 
 #export WAKATIME_HOME=$DOTFILES_DIR/zsh/.wakatime.cfg
