@@ -1,4 +1,9 @@
-export DOTFILES_DIR=~/dotfiles
+if [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ];
+then
+	export DOTFILES_DIR=~/dotfiles;
+else
+	export DOTFILES_DIR=/dotfiles;
+fi;
 
 #### Antigen plugins ####
 
