@@ -1,4 +1,4 @@
-export DOTFILES_DIR=/dotfiles
+export DOTFILES_DIR=~/dotfiles
 
 #### Antigen plugins ####
 
@@ -28,11 +28,18 @@ else
 	git config --global credential.helper osxkeychain;
 fi;
 
-
 #### Aliases and exports ####
 
 #export WAKATIME_HOME=$DOTFILES_DIR/zsh/.wakatime.cfg
 
 #alias ls='k'
 
+alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
+
 #### Scripts ####
+
+# Source 42 specific dotfiles
+if [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ];
+then
+	source ~/42_dotfiles/.zshrc
+fi;
