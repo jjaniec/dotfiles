@@ -1,25 +1,39 @@
-if [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ];
+#### Setup
+
+unset DOTFILES_DIR;
+
+DOTFILES_DIR="";
+
+# Load default locations if not set
+if [ -z "$DOTFILES_DIR" ];
 then
-	export DOTFILES_DIR=~/dotfiles;
-else
-	export DOTFILES_DIR=/dotfiles;
+	stat /dotfiles > /dev/null 2>&1;
+	if [ $? -ne 0 ];
+	then
+		export DOTFILES_DIR=~/dotfiles;
+	else
+		export DOTFILES_DIR=/dotfiles;
+	fi;
 fi;
 
 #### Antigen plugins ####
 
-source $DOTFILES_DIR/zsh/antigen.zsh
+if [ -n "$DOTFILES_DIR" ];
+then
+	source $DOTFILES_DIR/zsh/antigen.zsh
 
-antigen bundle zdharma/fast-syntax-highlighting
-antigen bundle supercrabtree/k
-antigen bundle eendroroy/zed-zsh
-antigen bundle zsh-users/zsh-autosuggestions
+	antigen bundle zdharma/fast-syntax-highlighting
+	antigen bundle supercrabtree/k
+	antigen bundle eendroroy/zed-zsh
+	antigen bundle zsh-users/zsh-autosuggestions
 
-antigen bundle mafredri/zsh-async
-antigen bundle sindresorhus/pure
+	antigen bundle mafredri/zsh-async
+	antigen bundle sindresorhus/pure
 
-#antigen bundle sobolevn/wakatime-zsh-plugin
+	#antigen bundle sobolevn/wakatime-zsh-plugin
 
-antigen apply
+	antigen apply
+fi;
 
 #### Git config ####
 
