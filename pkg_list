@@ -23,6 +23,7 @@ extra/lightdm
 # DE/wm
 community/i3-gaps
 - community/i3blocks
+- community/i3lock-fancy
 # unixporn
 community/compton
 - aur/compton-conf
@@ -37,6 +38,7 @@ aur/wireshark-gtk2
 git/https://github.com/x90skysn3k/brutespray.git
 
 ### Other ###
+community/xautolock
 # usefull tui tools
 community/ranger
 community/ncdu

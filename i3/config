@@ -196,3 +196,4 @@ client.focused #000000 #000000 #000000 #000000
 ##### Autostarts #####
 exec --no-startup-id compton -b -c -f
 exec --no-startup-id nm-applet
+exec --no-startup-id xautolock -time 5 -locker 'i3lock-fancy'
