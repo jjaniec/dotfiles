@@ -3,6 +3,7 @@
 unset DOTFILES_DIR;
 
 DOTFILES_DIR="";
+ANTIGEN_DIR=/zsh/antigen
 
 # Load default locations if not set
 if [ -z "$DOTFILES_DIR" ];
@@ -20,7 +21,18 @@ fi;
 
 if [ -n "$DOTFILES_DIR" ];
 then
-	source $DOTFILES_DIR/zsh/antigen.zsh
+	if ! [ -f $DOTFILES_DIR/zsh/antigen/antigen.zsh ];
+	then
+		git clone https://github.com/zsh-users/antigen $DOTFILES_DIR$ANTIGEN_DIR
+		git -C $DOTFILES_DIR$ANTIGEN_DIR checkout develop
+	fi;
+	git -C $DOTFILES_DIR$ANTIGEN_DIR fetch origin develop 2>/dev/null
+	if [ $? != 0 ];
+	then
+		git -C $DOTFILES_DIR$ANTIGEN_DIR pull origin develop
+	fi;
+
+	source $DOTFILES_DIR$ANTIGEN_DIR/antigen.zsh
 
 	antigen bundle zdharma/fast-syntax-highlighting
 	antigen bundle supercrabtree/k
