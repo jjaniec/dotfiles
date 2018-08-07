@@ -1,11 +1,9 @@
 #### Setup
 
-unset DOTFILES_DIR;
-
-DOTFILES_DIR="";
 ANTIGEN_DIR=/zsh/antigen
 
-# Load default locations if not set
+# Load default dotfiles location if not set
+
 if [ -z "$DOTFILES_DIR" ];
 then
 	stat /dotfiles > /dev/null 2>&1;
@@ -17,6 +15,18 @@ then
 	fi;
 fi;
 
+# Auto-update dotfiles if new commits found
+
+DOTFILES_BRANCH=$(git -C $DOTFILES_DIR name-rev --name-only HEAD)
+
+git -C $DOTFILES_DIR fetch origin $DOTFILES_BRANCH 2> /dev/null
+git -C $DOTFILES_DIR diff --exit-code origin/$DOTFILES_BRANCH
+if [ $? != 0 ];
+then
+	echo "\e[32mUpdating dotfiles...\e[39m"
+	git -C $DOTFILES_DIR merge origin/$DOTFILES_BRANCH
+fi;
+
 #### Antigen plugins ####
 
 if [ -n "$DOTFILES_DIR" ];
@@ -26,10 +36,12 @@ then
 		git clone https://github.com/zsh-users/antigen $DOTFILES_DIR$ANTIGEN_DIR
 		git -C $DOTFILES_DIR$ANTIGEN_DIR checkout develop
 	fi;
-	git -C $DOTFILES_DIR$ANTIGEN_DIR fetch origin develop 2>/dev/null
+	git -C $DOTFILES_DIR$ANTIGEN_DIR fetch origin develop 2> /dev/null
+	git -C $DOTFILES_DIR$ANTIGEN_DIR diff --exit-code origin/develop
 	if [ $? != 0 ];
 	then
-		git -C $DOTFILES_DIR$ANTIGEN_DIR pull origin develop
+		echo "\e[32mUpdating antigen...\e[39m"
+		git -C $DOTFILES_DIR$ANTIGEN_DIR merge origin/develop
 	fi;
 
 	source $DOTFILES_DIR$ANTIGEN_DIR/antigen.zsh
@@ -67,7 +79,6 @@ fi;
 
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias psc="ps xawf -eo pid,user,cgroup,args"
-
 
 #### Scripts ####
 
