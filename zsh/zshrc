@@ -2,7 +2,7 @@
 
 ANTIGEN_DIR=/zsh/antigen
 
-# Load default dotfiles location if not set
+# Load dotfiles location
 
 if [ -z "$DOTFILES_DIR" ];
 then
@@ -46,15 +46,19 @@ then
 
 	source $DOTFILES_DIR$ANTIGEN_DIR/antigen.zsh
 
-	antigen bundle zdharma/fast-syntax-highlighting
-	antigen bundle supercrabtree/k
-	antigen bundle eendroroy/zed-zsh
-	antigen bundle zsh-users/zsh-autosuggestions
-
+	# Pure theme
 	antigen bundle mafredri/zsh-async
 	antigen bundle sindresorhus/pure
 
+	# Additional features
+	antigen bundle zsh-users/zsh-autosuggestions
+	antigen bundle zsh-users/zsh-completions
+	antigen bundle zdharma/fast-syntax-highlighting
+
 	#antigen bundle sobolevn/wakatime-zsh-plugin
+
+	# Additional commands
+	antigen bundle eendroroy/zed-zsh
 
 	antigen apply
 fi;
@@ -74,8 +78,6 @@ fi;
 #### Aliases and exports ####
 
 #export WAKATIME_HOME=$DOTFILES_DIR/zsh/.wakatime.cfg
-
-#alias ls='k'
 
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias psc="ps xawf -eo pid,user,cgroup,args"
