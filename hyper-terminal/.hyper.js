@@ -131,7 +131,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hyperpower', 'hyper-search', 'verminal', 'gitrocket', 'space-pull', 'hyper-spotify'],
+  plugins: ['hyperpower', 'hyper-search', 'verminal', 'gitrocket', 'space-pull', 'hyper-spotify', 'hypercwd'],
   //broken: hypergoogle, hyperminimal
 
   // in development, you can create a directory under
