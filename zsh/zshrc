@@ -2,6 +2,10 @@
 
 ANTIGEN_DIR=/zsh/antigen
 
+setopt autocd							# If only a directory is entered, cd there
+
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'	# Case insensitive auto-completion
+
 # Load dotfiles location
 
 if [ -z "$DOTFILES_DIR" ];
@@ -17,14 +21,17 @@ fi;
 
 # Auto-update dotfiles if new commits found
 
-DOTFILES_BRANCH=$(git -C $DOTFILES_DIR name-rev --name-only HEAD)
-
-git -C $DOTFILES_DIR fetch origin $DOTFILES_BRANCH 2> /dev/null
-git -C $DOTFILES_DIR diff --exit-code origin/$DOTFILES_BRANCH
-if [ $? != 0 ];
+if [ -n "$DOTFILES_DIR" ];
 then
-	echo "\e[32mUpdating dotfiles...\e[39m"
-	git -C $DOTFILES_DIR merge origin/$DOTFILES_BRANCH
+	DOTFILES_BRANCH=$(git -C $DOTFILES_DIR name-rev --name-only HEAD)
+
+	git -C $DOTFILES_DIR fetch origin $DOTFILES_BRANCH > /dev/null 2>&1
+	git -C $DOTFILES_DIR diff --exit-code master...origin/$DOTFILES_BRANCH > /dev/null 2>&1
+	if [ $? != 0 ];
+	then
+		echo "\e[32mRemote has new commits ! Updating ...\e[39m"
+		git -C $DOTFILES_DIR merge origin/$DOTFILES_BRANCH
+	fi;
 fi;
 
 #### Antigen plugins ####
@@ -82,10 +89,21 @@ fi;
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias psc="ps xawf -eo pid,user,cgroup,args"
 
+# Enable coloration in less
+export LESS_TERMCAP_mb=$'\E[01;32m'
+export LESS_TERMCAP_md=$'\E[01;32m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;47;34m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;36m'
+export LESS=-r
+
 #### Scripts ####
 
 # Source 42 specific dotfiles
 if [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ];
 then
 	source ~/42_dotfiles/.zshrc
+	source ~/.brewconfig
 fi;

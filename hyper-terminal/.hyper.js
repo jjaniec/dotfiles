@@ -27,7 +27,7 @@ module.exports = {
     cursorAccentColor: '#000',
 
     // `'BEAM'` for |, `'UNDERLINE'` for _, `'BLOCK'` for █
-    cursorShape: 'BLOCK',
+    cursorShape: 'UNDERLINE',
 
     // set to `true` (without backticks and without quotes) for blinking cursor
     cursorBlink: false,
@@ -131,7 +131,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hyperpower', 'hyper-search', 'verminal', 'gitrocket', 'space-pull', 'hyper-spotify', 'hypercwd'],
+  plugins: ['hyperpower', 'gitrocket', 'hyper-spotify', 'hypercwd', 'hyper-seti-monokai', 'hyper-tabs-enhanced', 'hyperterm-overlay'],
   //broken: hypergoogle, hyperminimal
 
   // in development, you can create a directory under
@@ -143,4 +143,22 @@ module.exports = {
     // Example
     // 'window:devtools': 'cmd+alt+o',
   },
+
+  // Hyperterm-overlay settings
+  overlay: {
+    alwaysOnTop: true,
+    animate: true,
+    hasShadow: false,
+    hideDock: false,
+    hideOnBlur: false,
+    hotkeys: ['Control+Space'],
+    position: 'top',
+    primaryDisplay: false,
+    resizable: true,
+    startAlone: false,
+    startup: true,
+    size: 0.3,
+    tray: true,
+    unique: false
+  }
 };
