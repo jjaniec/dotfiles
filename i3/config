@@ -197,5 +197,6 @@ client.focused #000000 #000000 #000000 #000000
 exec --no-startup-id compton -b -c -f
 exec --no-startup-id nm-applet
 exec --no-startup-id xautolock -time 5 -locker 'i3lock-fancy'
+exec --no-startup-id twmnd
 exec_always --no-startup-id flashfocus
 
