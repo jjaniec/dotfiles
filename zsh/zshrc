@@ -84,10 +84,15 @@ fi;
 
 #### Aliases and exports ####
 
+# Add dotfiles/bin to path
+export PATH="$PATH:$DOTFILES_DIR/bin"
+
 #export WAKATIME_HOME=$DOTFILES_DIR/zsh/.wakatime.cfg
 
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias psc="ps xawf -eo pid,user,cgroup,args"
+alias vcat="/bin/cat"
+alias cat="$DOTFILES_DIR/bin/bat_v0_7_0"
 
 # Enable coloration in less
 export LESS_TERMCAP_mb=$'\E[01;32m'
@@ -102,8 +107,8 @@ export LESS=-r
 #### Scripts ####
 
 # Source 42 specific dotfiles
-if [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ];
+if [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ] && [ -f ~/42_dotfiles ];
 then
-	source ~/42_dotfiles/.zshrc
 	source ~/.brewconfig
+	source ~/42_dotfiles/.zshrc
 fi;
