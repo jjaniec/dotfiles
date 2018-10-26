@@ -1,5 +1,10 @@
 #### Setup
 
+#set -o errexit
+#set -o pipefail
+#set -o nounset
+#set -o xtrace
+
 ANTIGEN_DIR=/zsh/antigen
 
 setopt autocd							# If only a directory is entered, cd there
@@ -92,7 +97,14 @@ export PATH="$PATH:$DOTFILES_DIR/bin"
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias psc="ps xawf -eo pid,user,cgroup,args"
 alias vcat="/bin/cat"
-alias cat="$DOTFILES_DIR/bin/bat_v0_7_0"
+
+if [ "$(uname -s)" = "Linux" ];
+then
+	alias cat="$DOTFILES_DIR/bin/bat-v0.8.0-x86_64-unknown-linux-gnu"
+elif [ "$(uname -s)" = "Darwin" ];
+then
+	alias cat="$DOTFILES_DIR/bin/bat-v0.8.0-x86_64-apple-darwin"
+fi;
 
 # Enable coloration in less
 export LESS_TERMCAP_mb=$'\E[01;32m'
