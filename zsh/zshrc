@@ -5,9 +5,16 @@
 #set -o nounset
 #set -o xtrace
 
+ZPLUG_DIR=/zsh/zplug
 ANTIGEN_DIR=/zsh/antigen
+DOTFILES_DIR=
+OS=$(uname -s)
 
-setopt autocd							# If only a directory is entered, cd there
+setopt autocd # If only a directory is entered, cd there
+setopt no_beep
+setopt hist_ignore_dups
+setopt long_list_jobs
+setopt mark_dirs # Add "/" if completes directory
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'	# Case insensitive auto-completion
 
@@ -39,40 +46,103 @@ then
 	fi;
 fi;
 
-#### Antigen plugins ####
+#### Zsh plugins ####
 
 if [ -n "$DOTFILES_DIR" ];
 then
-	if ! [ -f $DOTFILES_DIR/zsh/antigen/antigen.zsh ];
+	if command -v awk > /dev/null;
 	then
-		git clone https://github.com/zsh-users/antigen $DOTFILES_DIR$ANTIGEN_DIR
-		git -C $DOTFILES_DIR$ANTIGEN_DIR checkout develop
+		export ZPLUG_HOME=${DOTFILES_DIR}${ZPLUG_DIR}/.zplug
+
+		if ! [ -d ${ZPLUG_HOME} ];
+		then
+			git clone https://github.com/zplug/zplug ${ZPLUG_HOME}
+		fi;
+
+		source ${ZPLUG_HOME}/init.zsh
+		zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+
+		zplug "mafredri/zsh-async", from:github, depth:1
+		zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme, depth:1
+
+		zplug "zsh-users/zsh-autosuggestions", from:github, depth:1
+		zplug "zsh-users/zsh-completions", from:github, depth:1
+		zplug "zdharma/fast-syntax-highlighting", from:github, depth:1
+
+		zplug "supercrabtree/k", from:github, depth:1
+		zplug "rupa/z", from:github, use:"z.sh", depth:1
+		zplug "b4b4r07/enhancd", from:github, use:"init.sh", depth:1
+		zplug "raylee/tldr", from:github, as:command, use:"tldr", depth:1
+
+		zplug "lirantal/dockly", \
+			from:github, \
+			as:command, \
+			use:"index.js", \
+			rename-to:"dockly", \
+			hook-build:"npm install", \
+			depth:1, \
+			if:"(( $+commands[npm] ))"
+
+		zplug "jhawthorn/fzy", \
+		    from:github, \
+			as:command, \
+ 			use:"fzy", \
+			hook-build:"make", \
+			depth:1
+
+	#	if [ "${OS}" = "Linux" ];
+	#	then
+	#		zplug "sharkdp/bat", \
+	#		    from:gh-r, \
+	#			as:command, \
+ 	#			use:"bat-*-x86_64-unknown-linux-gnu.tar.gz", \
+	#			hook-build:"make", \
+	#			depth:1
+	#		alias cat="bat"
+	#	elif [ "${OS}" = "Darwin" ];
+	#	then
+	#		echo ;
+	#	fi;
+
+		if ! zplug check --verbose;
+		then
+		    echo;
+			zplug install;
+		fi;
+
+		zplug load
+	else
+		if ! [ -f ${DOTFILES_DIR}${ANTIGEN_DIR}/antigen.zsh ];
+		then
+			git clone https://github.com/zsh-users/antigen ${DOTFILES_DIR}${ANTIGEN_DIR}
+			git -C $DOTFILES_DIR$ANTIGEN_DIR checkout develop
+		fi;
+		git -C $DOTFILES_DIR$ANTIGEN_DIR fetch origin develop 2> /dev/null
+		git -C $DOTFILES_DIR$ANTIGEN_DIR diff --exit-code origin/develop
+		if [ $? != 0 ];
+		then
+			echo "\e[32mUpdating antigen...\e[39m"
+			git -C $DOTFILES_DIR$ANTIGEN_DIR merge origin/develop
+		fi;
+
+		source $DOTFILES_DIR$ANTIGEN_DIR/antigen.zsh
+
+		# Pure theme
+		antigen bundle mafredri/zsh-async
+		antigen bundle sindresorhus/pure
+
+		# Additional features
+		antigen bundle zsh-users/zsh-autosuggestions
+		antigen bundle zsh-users/zsh-completions
+		antigen bundle zdharma/fast-syntax-highlighting
+
+		#antigen bundle sobolevn/wakatime-zsh-plugin
+
+		# Additional commands
+		antigen bundle eendroroy/zed-zsh
+
+		antigen apply
 	fi;
-	git -C $DOTFILES_DIR$ANTIGEN_DIR fetch origin develop 2> /dev/null
-	git -C $DOTFILES_DIR$ANTIGEN_DIR diff --exit-code origin/develop
-	if [ $? != 0 ];
-	then
-		echo "\e[32mUpdating antigen...\e[39m"
-		git -C $DOTFILES_DIR$ANTIGEN_DIR merge origin/develop
-	fi;
-
-	source $DOTFILES_DIR$ANTIGEN_DIR/antigen.zsh
-
-	# Pure theme
-	antigen bundle mafredri/zsh-async
-	antigen bundle sindresorhus/pure
-
-	# Additional features
-	antigen bundle zsh-users/zsh-autosuggestions
-	antigen bundle zsh-users/zsh-completions
-	antigen bundle zdharma/fast-syntax-highlighting
-
-	#antigen bundle sobolevn/wakatime-zsh-plugin
-
-	# Additional commands
-	antigen bundle eendroroy/zed-zsh
-
-	antigen apply
 fi;
 
 #### Git config ####
