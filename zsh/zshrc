@@ -50,7 +50,8 @@ fi;
 
 if [ -n "$DOTFILES_DIR" ];
 then
-	if command -v awk > /dev/null;
+	if command -v awk > /dev/null && ! [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ];
+
 	then
 		export ZPLUG_HOME=${DOTFILES_DIR}${ZPLUG_DIR}/.zplug
 
