@@ -131,8 +131,18 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hyperpower', 'gitrocket', 'hyper-spotify', 'hypercwd', 'hyper-seti-monokai', 'hyper-tabs-enhanced', 'hyperterm-overlay'],
+  plugins: [
+  'hyper-opacity',
+	'hyperpower',
+	'gitrocket',
+//	'hyperline',
+	'hypercwd',
+	'hyper-tabs-enhanced',
+	'hyper-seti-monokai',
+	'hyper-search'
+	],
   //broken: hypergoogle, hyperminimal
+  //themes: hyper-seti-monokai, hyper-snazzy
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
@@ -143,6 +153,8 @@ module.exports = {
     // Example
     // 'window:devtools': 'cmd+alt+o',
   },
+
+  opacity: 0.9,
 
   // Hyperterm-overlay settings
   overlay: {

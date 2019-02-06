@@ -31,6 +31,13 @@ then
 	fi;
 fi;
 
+# Source 42 specific dotfiles
+if [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ] && [ -f ~/42_dotfiles ];
+then
+	source ~/.brewconfig
+	source ~/42_dotfiles/.zshrc
+fi;
+
 # Auto-update dotfiles if new commits found
 
 if [ -n "$DOTFILES_DIR" ];
@@ -189,9 +196,3 @@ export LESS=-r
 
 #### Scripts ####
 
-# Source 42 specific dotfiles
-if [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ] && [ -f ~/42_dotfiles ];
-then
-	source ~/.brewconfig
-	source ~/42_dotfiles/.zshrc
-fi;
