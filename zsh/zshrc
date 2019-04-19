@@ -15,6 +15,7 @@ setopt no_beep
 setopt hist_ignore_dups
 setopt long_list_jobs
 setopt mark_dirs # Add "/" if completes directory
+setopt autopushd
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'	# Case insensitive auto-completion
 
@@ -184,6 +185,9 @@ then
 	alias cat="$DOTFILES_DIR/bin/bat-v0.8.0-x86_64-apple-darwin"
 fi;
 
+export LC_CTYPE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
 # Enable coloration in less
 export LESS_TERMCAP_mb=$'\E[01;32m'
 export LESS_TERMCAP_md=$'\E[01;32m'
@@ -196,3 +200,8 @@ export LESS=-r
 
 #### Scripts ####
 
+# Source aws-cli auto-completion script
+if command -v aws_zsh_completer.sh > /dev/null 2>&1;
+then
+	source aws_zsh_completer.sh
+fi;
