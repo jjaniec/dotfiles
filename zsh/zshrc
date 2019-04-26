@@ -78,7 +78,10 @@ then
 		zplug "zsh-users/zsh-completions", from:github, depth:1
 		zplug "zdharma/fast-syntax-highlighting", from:github, depth:1
 
-		zplug "supercrabtree/k", from:github, depth:1
+		zplug "ahmetb/kubectl-aliases", use:.kubectl_aliases
+		zplug "plugins/aws", from:oh-my-zsh
+		zplug "djui/alias-tips", from:github
+
 		zplug "rupa/z", from:github, use:"z.sh", depth:1
 		zplug "b4b4r07/enhancd", from:github, use:"init.sh", depth:1
 		zplug "raylee/tldr", from:github, as:command, use:"tldr", depth:1
@@ -99,19 +102,21 @@ then
 			hook-build:"make", \
 			depth:1
 
-	#	if [ "${OS}" = "Linux" ];
-	#	then
-	#		zplug "sharkdp/bat", \
-	#		    from:gh-r, \
-	#			as:command, \
- 	#			use:"bat-*-x86_64-unknown-linux-gnu.tar.gz", \
-	#			hook-build:"make", \
-	#			depth:1
-	#		alias cat="bat"
-	#	elif [ "${OS}" = "Darwin" ];
-	#	then
-	#		echo ;
-	#	fi;
+		if [ "${OS}" = "Linux" ];
+		then
+			zplug "sharkdp/bat", \
+				from:gh-r, \
+				as:command, \
+				use:"*-x86_64-unknown-linux*", \
+				rename-to:cat
+		elif [ "${OS}" = "Darwin" ];
+		then
+			zplug "sharkdp/bat", \
+				from:gh-r, \
+				as:command, \
+				use:"*darwin*", \
+				rename-to:cat
+		fi;
 
 		if ! zplug check --verbose;
 		then
@@ -159,10 +164,11 @@ fi;
 git config --global user.email "jjaniec@student.42.fr"
 git config --global user.name "Joffrey Janiec"
 
-if [ "$(uname -s)" = "Linux" ];
+if [ "${OS}" = "Linux" ];
 then
 	git config --global credential.helper cache;
-else
+elif [ "${OS}" = "Darwin" ];
+then
 	git config --global credential.helper osxkeychain;
 fi;
 
@@ -179,10 +185,10 @@ alias vcat="/bin/cat"
 
 if [ "$(uname -s)" = "Linux" ];
 then
-	alias cat="$DOTFILES_DIR/bin/bat-v0.8.0-x86_64-unknown-linux-gnu"
+	;
 elif [ "$(uname -s)" = "Darwin" ];
 then
-	alias cat="$DOTFILES_DIR/bin/bat-v0.8.0-x86_64-apple-darwin"
+	;
 fi;
 
 export LC_CTYPE=en_US.UTF-8
