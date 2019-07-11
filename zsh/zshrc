@@ -86,6 +86,8 @@ then
 		zplug "b4b4r07/enhancd", from:github, use:"init.sh", depth:1
 		zplug "raylee/tldr", from:github, as:command, use:"tldr", depth:1
 
+		zplug "Tarrasch/zsh-autoenv"
+
 		zplug "lirantal/dockly", \
 			from:github, \
 			as:command, \
@@ -168,7 +170,7 @@ git config --global user.name "Joffrey Janiec"
 git config --global core.excludesfile ${DOTFILES_DIR}/git/.gitignore
 
 # Custom 'change-commits' alias -> see https://stackoverflow.com/questions/2919878/git-rewrite-previous-commit-usernames-and-emails
-git config alias.change-commits '!'"f() { VAR=\$1; OLD=\$2; NEW=\$3; shift 3; git filter-branch --env-filter \"if [[ \\\"\$\`echo \$VAR\`\\\" = '\$OLD' ]]; then export \$VAR='\$NEW'; fi\" \$@; }; f "
+git config --global alias.change-commits '!'"f() { VAR=\$1; OLD=\$2; NEW=\$3; shift 3; git filter-branch --env-filter \"if [[ \\\"\$\`echo \$VAR\`\\\" = '\$OLD' ]]; then export \$VAR='\$NEW'; fi\" \$@; }; f "
 
 if [ "${OS}" = "Linux" ];
 then
@@ -226,6 +228,9 @@ export LESS=-r
 
 #### Scripts ####
 
+# Add local dotfiles scripts to path
+export PATH="$PATH:$DOTFILES_DIR/scripts"
+
 # Source aws-cli auto-completion script
 if command -v aws_zsh_completer.sh > /dev/null 2>&1;
 then
@@ -236,4 +241,5 @@ fi;
 if command -v pyenv > /dev/null 2>&1;
 then
 	eval "$(pyenv init -)"
+	eval "$(pipenv --completion)"
 fi;
