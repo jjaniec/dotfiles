@@ -187,7 +187,7 @@ preexec_functions=()
 function expand_aliases {
   input_command=$1
   expanded_command=$2
-  if [ $input_command != $expanded_command ] && alias | grep $1 > /dev/null; then
+  if [ $input_command != $expanded_command ] && alias | grep $1 > /dev/null 2>&1; then
     echo "\t'$1' -> '$expanded_command'"
   fi
 }
@@ -202,6 +202,8 @@ export PATH="$PATH:$DOTFILES_DIR/bin"
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias psc="ps xawf -eo pid,user,cgroup,args"
 alias vcat="/bin/cat"
+alias kcn='kubectl config set-context --current --namespace'
+alias kruncurl='kubectl run -it --restart=Never --rm --image=appropriate/curl curl --'
 
 if [ "$(uname -s)" = "Linux" ];
 then
