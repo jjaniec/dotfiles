@@ -1,7 +1,7 @@
 #!/bin/bash
 #d Copy private key to a bastion host and connect to it
 
-#u Usage: bastion_cp_key_connect.sh ~/Downloads/DefaultKPIreland.pem ec2-user@ip
+#u Usage: bastion_cp_key_connect.sh ~/Downloads/DefaultKPIreland.pem user@ip
 
 echo AWS_CURRENT_BASTION_KEYFILE=$1 > $PWD/.autoenv.zsh
 echo AWS_CURRENT_BASTION_USER="$(echo $2 | cut -d '@' -f 1)" >> $PWD/.autoenv.zsh
