@@ -139,6 +139,9 @@ then
 			depth:1, \
 			if:"(( $+commands[npm] ))"
 
+    zplug "paulirish/git-open", \
+      as:plugin
+
 #		zplug "jhawthorn/fzy", \
 #		  from:github, \
 #			as:command, \
