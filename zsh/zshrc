@@ -69,22 +69,64 @@ then
 		fi;
 
 		source ${ZPLUG_HOME}/init.zsh
-		zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+		zplug 'zplug/zplug', \
+      hook-build:'zplug --self-manage'
 
-		zplug "mafredri/zsh-async", from:github, depth:1
-		zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme, depth:1
+		zplug "mafredri/zsh-async", \
+      from:github, \
+      depth:1
+		zplug "sindresorhus/pure", \
+      use:pure.zsh, \
+      from:github, \
+      as:theme, \
+      depth:1
 
-		zplug "zsh-users/zsh-autosuggestions", from:github, depth:1
-		zplug "zsh-users/zsh-completions", from:github, depth:1
-		zplug "zdharma/fast-syntax-highlighting", from:github, depth:1
+		zplug "zsh-users/zsh-autosuggestions", \
+      from:github, \
+      depth:1
+		zplug "zsh-users/zsh-completions", \
+      from:github, \
+      depth:1
+		zplug "zdharma/fast-syntax-highlighting", \
+      from:github, \
+      depth:1
 
-		zplug "ahmetb/kubectl-aliases", use:.kubectl_aliases
-		zplug "plugins/aws", from:oh-my-zsh
-		zplug "djui/alias-tips", from:github
+		zplug "ahmetb/kubectl-aliases", \
+      use:.kubectl_aliases
+		zplug "plugins/aws", \
+      from:oh-my-zsh
+		zplug "djui/alias-tips", \
+      from:github
 
-		zplug "rupa/z", from:github, use:"z.sh", depth:1
-		zplug "b4b4r07/enhancd", from:github, use:"init.sh", depth:1
-		zplug "raylee/tldr", from:github, as:command, use:"tldr", depth:1
+		zplug "rupa/z", \
+      from:github, \
+      use:"z.sh", \
+      depth:1
+
+    zplug "b4b4r07/enhancd", \
+      from:github, \
+      use:"init.sh", \
+      depth:1
+    ENHANCD_FILTER=fzf:fzy
+
+    zplug "raylee/tldr", \
+      from:github, \
+      as:command, \
+      use:"tldr", \
+      depth:1
+
+    zplug "junegunn/fzf-bin", \
+      from:gh-r, \
+      as:command, \
+      rename-to:fzf, \
+      use:"*$(echo ${OS} | tr '[:upper:]' '[:lower:]')*amd64*"
+    zplug "junegunn/fzf", \
+      use:"shell/*.zsh", \
+      defer:2
+    zplug "junegunn/fzf", \
+      use:"bin/fzf-tmux", \
+      as:command, \
+      defer:2
 
 		zplug "Tarrasch/zsh-autoenv"
 
@@ -97,20 +139,20 @@ then
 			depth:1, \
 			if:"(( $+commands[npm] ))"
 
-		zplug "jhawthorn/fzy", \
-		    from:github, \
-			as:command, \
- 			use:"fzy", \
-			hook-build:"make", \
-			depth:1
+#		zplug "jhawthorn/fzy", \
+#		  from:github, \
+#			as:command, \
+#			use:"fzy", \
+# 		hook-build:"make", \
+# 		depth:1
 
 		if [ "${OS}" = "Linux" ];
 		then
-			zplug "sharkdp/bat", \
-				from:gh-r, \
-				as:command, \
-				use:"*-x86_64-unknown-linux*", \
-				rename-to:cat
+#			zplug "sharkdp/bat", \
+#				from:gh-r, \
+#				as:command, \
+#				use:"*-x86_64-unknown-linux*", \
+#				rename-to:cat
 		elif [ "${OS}" = "Darwin" ];
 		then
 #			zplug "sharkdp/bat", \

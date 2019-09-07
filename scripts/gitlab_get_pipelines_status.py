@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+#d Get pipelines status of a gitlab repo
+
+#u GITLAB_URL='https://example.com/' GITLAB_TOKEN='' ./gitlab_get_pipelines_status.py project_dir/project [ref]
+
 import json
 import sys
 import typing

@@ -134,7 +134,7 @@ module.exports = {
   plugins: [
   'hyper-opacity',
 	'hyperpower',
-	'gitrocket',
+	//'gitrocket',
 //	'hyperline',
 	'hypercwd',
 	'hyper-tabs-enhanced',
