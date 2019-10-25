@@ -142,27 +142,17 @@ then
     zplug "paulirish/git-open", \
       as:plugin
 
-#		zplug "jhawthorn/fzy", \
-#		  from:github, \
-#			as:command, \
-#			use:"fzy", \
-# 		hook-build:"make", \
-# 		depth:1
+    zplug "sharkdp/bat",\
+      as:command, \
+      from:gh-r, \
+      rename-to:bat
 
 		if [ "${OS}" = "Linux" ];
 		then
-#			zplug "sharkdp/bat", \
-#				from:gh-r, \
-#				as:command, \
-#				use:"*-x86_64-unknown-linux*", \
-#				rename-to:cat
+      ;
 		elif [ "${OS}" = "Darwin" ];
 		then
-#			zplug "sharkdp/bat", \
-#				from:gh-r, \
-#				as:command, \
-#				use:"*darwin*", \
-#				rename-to:cat
+      ;
 		fi;
 
 		if ! zplug check --verbose;
@@ -262,6 +252,9 @@ export AWS_DEFAULT_REGION='eu-west-1'
 
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+
+# Enable bat preview for fzf
+export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 
 # Enable coloration in less
 export LESS_TERMCAP_mb=$'\E[01;32m'
