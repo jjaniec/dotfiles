@@ -1,0 +1,51 @@
+{
+  // Theming / Editor settings
+  "workbench.colorTheme": "Monokai",
+  "workbench.panel.location": "bottom",
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "window.zoomLevel": -1,
+  "editor.renderWhitespace": "all",
+  "editor.insertSpaces": false,
+  "editor.tabCompletion": true,
+  "editor.renderFinalNewline": false,
+  "files.insertFinalNewline": true,
+  "editor.formatOnSave": true,
+  // Telemetry
+  "terraform.telemetry.enabled": false,
+  // Extensions
+  "gitlens.advanced.messages": {
+    "suppressShowKeyBindingsNotice": true,
+    "suppressWelcomeNotice": true
+  },
+  "vim.disableExtension": true,
+  "gitlens.keymap": "alternate",
+  "workbench.startupEditor": "newUntitledFile",
+  "gitlens.historyExplorer.enabled": true,
+  // Settings Sync
+  "sync.gist": "7c503e3156b2d3da32d27cd5adf57612",
+  "sync.lastUpload": "2018-08-19T15:40:36.433Z",
+  "sync.autoDownload": false,
+  "sync.autoUpload": false,
+  "sync.lastDownload": "2018-07-23T12:36:03.035Z",
+  "sync.forceDownload": false,
+  "sync.host": "",
+  "sync.pathPrefix": "",
+  "sync.quietSync": false,
+  "sync.askGistName": false,
+  "sync.removeExtensions": true,
+  "sync.syncExtensions": true,
+  "sync.forceUpload": true,
+  // Language specific settings
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[terraform]": {
+    "editor.formatOnSave": true
+  },
+  "[json]": {},
+  "[c]": {
+    "editor.formatOnSave": false
+  }
+}
+
