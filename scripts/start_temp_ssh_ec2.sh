@@ -7,7 +7,7 @@ set -o nounset
 #set -o xtrace
 set -o errexit
 
-EC2_AMI="ami-0ce71448843cb18a1" # Amazon Linux 2
+EC2_AMI="ami-028188d9b49b32a80" # Amazon Linux 2
 KEYPAIR_NAME="DefaultKPIreland"
 KEYPAIR_PATH='~/Downloads/DefaultKPIreland.pem'
 CONNECT_MAX_RETRY=60
@@ -27,6 +27,19 @@ fi;
 
 
 echo "Current ip: ${cur_ip}"
+
+function create_sg_rule() {
+  SG_ID=${1}
+  PROTO=${2}
+  PORT=${3}
+  echo -n "Creating security group rule for ${cur_ip}/32 ${PROTO}/${PORT} ... "
+  aws ec2 authorize-security-group-ingress \
+    --group-id ${SG_ID} \
+    --protocol ${PROTO} \
+    --port ${PORT} \
+    --cidr "${cur_ip}/32"
+  echo "✔️ "
+}
 
 function connect_instance_id () {
   instance_pubip=$(
@@ -54,13 +67,9 @@ SG_ID=$(\
 )
 echo "✔️  (${SG_ID})"
 
-echo -n "Creating security group rule for ${cur_ip}/32 ... "
-aws ec2 authorize-security-group-ingress \
-  --group-id ${SG_ID} \
-  --protocol tcp \
-  --port 22 \
-  --cidr "${cur_ip}/32"
-echo "✔️ "
+create_sg_rule ${SG_ID} tcp 22
+create_sg_rule ${SG_ID} tcp 80
+create_sg_rule ${SG_ID} tcp 8080
 
 echo -n "Starting ec2 instance ... "
 aws ec2 run-instances \
@@ -117,7 +126,8 @@ do
         -i ${KEYPAIR_PATH} \
         -o 'StrictHostKeyChecking=no' \
         -q \
-        ec2-user@${instance_pubip}
+        ec2-user@${instance_pubip} || \
+        true
       #connect_instance_id ${instance_id}
       break ;
     fi;

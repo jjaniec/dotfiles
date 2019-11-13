@@ -283,3 +283,15 @@ then
 	eval "$(pyenv init -)"
 	eval "$(pipenv --completion)"
 fi;
+
+# Clone repo and cd into it
+clone_repo() {
+  GIT_DEST_DIR="${HOME}"
+
+  src=$(echo ${1} | cut -d '/' -f 3- | rev | cut -d '/' -f 2- | rev)
+  project=$(echo ${1} | rev | cut -d '/' -f 1 | rev | cut -d '.' -f 1)
+
+  mkdir -p "${GIT_DEST_DIR}/${src}"
+  git -C ${GIT_DEST_DIR}/${src} clone ${1}
+  cd ${GIT_DEST_DIR}/${src}/${project}
+}
