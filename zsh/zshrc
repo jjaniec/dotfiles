@@ -198,9 +198,6 @@ fi;
 
 #### Git config ####
 
-git config --global user.email "jjaniec@student.42.fr"
-git config --global user.name "Joffrey Janiec"
-
 # Global gitignore
 git config --global core.excludesfile ${DOTFILES_DIR}/git/.gitignore
 
@@ -237,6 +234,7 @@ export PATH="$PATH:$DOTFILES_DIR/bin"
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias psc="ps xawf -eo pid,user,cgroup,args"
 alias vcat="/bin/cat"
+alias l='ls -laG'
 alias kcn='kubectl config set-context --current --namespace'
 alias kruncurl='kubectl run -it --restart=Never --rm --image=appropriate/curl curl --'
 
@@ -268,6 +266,9 @@ export LESS=-r
 
 #### Scripts ####
 
+# Export templates path
+export TEMPLATES_PATH="${DOTFILES_DIR}/templates"
+
 # Add local dotfiles scripts to path
 export PATH="$PATH:$DOTFILES_DIR/scripts"
 
@@ -295,3 +296,7 @@ clone_repo() {
   git -C ${GIT_DEST_DIR}/${src} clone ${1}
   cd ${GIT_DEST_DIR}/${src}/${project}
 }
+
+# Set git user.email / user.name
+
+git_switch_profile.sh > /dev/null
