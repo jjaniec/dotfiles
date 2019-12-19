@@ -5,14 +5,36 @@
 
 set -o nounset
 #set -o xtrace
+#set -o verbose
 set -o errexit
 
-EC2_AMI="ami-028188d9b49b32a80" # Amazon Linux 2
-KEYPAIR_NAME="DefaultKPIreland"
-KEYPAIR_PATH='~/Downloads/DefaultKPIreland.pem'
-CONNECT_MAX_RETRY=60
+EC2_INSTANCE_TYPE=${EC2_INSTANCE_TYPE:=t2.medium}
+#EC2_AMI="ami-028188d9b49b32a80" # Amazon Linux 2
+EC2_AMI=${EC2_AMI:=ami-040ba9174949f6de4} # Amazon Linux 2
+DEFAULT_USER_DATA=\
+'#!/bin/bash -xe
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+ amazon-linux-extras install -y docker
+ service docker start
+ usermod -a -G docker ec2-user
+ newgrp docker
+ yum install -y git
+
+ # Start code-server
+ su -c "mkdir -p /home/ec2-user/.local/share/code-server" ec2-user
+ su -c "sudo chmod -R 777 /home/ec2-user/.local/share/code-server" ec2-user
+ su -c '"'"'newgrp docker; docker run -it -d -p 127.0.0.1:8080:8080 --net=host -v ${HOME}"/.local/share/code-server:/home/coder/.local/share/code-server" -v "$PWD:/home/coder/project" codercom/code-server:v2'"'"' ec2-user
+'
+USER_DATA=${USER_DATA:=${DEFAULT_USER_DATA}}
+
+KEYPAIR_NAME=${KEYPAIR_NAME:=DefaultKPIreland}
+KEYPAIR_PATH=${KEYPAIR_PATH:=~/Downloads/DefaultKPIreland.pem}
+CONNECT_MAX_RETRY=${CONNECT_MAX_RETRY:=60}
 cur_ip=$(curl -4 -s ifconfig.co)
 tmp_loc=$(mktemp)
+
+OK_FMT="\033[32m√\033[39m"
+COLS=$(tput cols)
 
 if [ "$#" -ne 2 ];
 then
@@ -24,7 +46,6 @@ else
   vpc_id_fmt="--vpc-id ${1}"
   subnet_id_fmt="--subnet-id ${2}"
 fi;
-
 
 echo "Current ip: ${cur_ip}"
 
@@ -38,7 +59,7 @@ function create_sg_rule() {
     --protocol ${PROTO} \
     --port ${PORT} \
     --cidr "${cur_ip}/32"
-  echo "✔️ "
+  echo -e "${OK_FMT}"
 }
 
 function connect_instance_id () {
@@ -65,7 +86,7 @@ SG_ID=$(\
     ${vpc_id_fmt} \
   | jq -r '.GroupId'
 )
-echo "✔️  (${SG_ID})"
+echo -e "${OK_FMT} (${SG_ID})"
 
 create_sg_rule ${SG_ID} tcp 22
 create_sg_rule ${SG_ID} tcp 80
@@ -75,10 +96,11 @@ echo -n "Starting ec2 instance ... "
 aws ec2 run-instances \
   --image-id ${EC2_AMI} \
   --count 1 \
-  --instance-type t2.micro \
+  --instance-type ${EC2_INSTANCE_TYPE} \
   --key-name ${KEYPAIR_NAME} \
   --security-group-ids ${SG_ID} \
   --associate-public-ip-address  \
+  --user-data "${USER_DATA}" \
   ${subnet_id_fmt} \
   > ${tmp_loc}
 
@@ -87,7 +109,7 @@ instance_id=$(\
   | grep InstanceId \
   | cut -d '"' -f 4
 )
-echo "✔️  (${instance_id})"
+echo -e "${OK_FMT} (${instance_id})"
 
 echo "Waiting instance ${instance_id} to be ready ... "
 
@@ -106,6 +128,8 @@ do
         '.Reservations[0] .Instances[0] .PublicIpAddress'
     )
 
+    printf ' %.0s' {1..${COLS}}
+    echo -n -e "\r"
     echo -n -e "(retry ${i}/${CONNECT_MAX_RETRY})\tState: ${instance_state}\tStatus: ${instance_status}\t\tPublic IP: ${instance_pubip}"
     #connect ${instance_pubip} exit
     set -e
@@ -120,7 +144,7 @@ do
     #echo "Last exit code: ${ssh_exit_code}"
     if [ ${ssh_exit_code} -eq 0 ];
     then
-      echo -e "\t✔️"
+      echo -e "\t${OK_FMT}"
       osascript -e "display notification \"${instance_pubip} up\" with title \"${0}\"" || true
       ssh \
         -i ${KEYPAIR_PATH} \
@@ -142,7 +166,7 @@ aws ec2 terminate-instances \
   > ${tmp_loc}
 aws ec2 wait instance-terminated \
   --instance-ids ${instance_id}
-echo '✔️'
+echo -e "${OK_FMT}"
 
 osascript -e "display notification \"Instance ${instance_id} terminated\" with title \"${0}\"" || true
 
@@ -150,6 +174,6 @@ echo -n "Deleting temporary security group ${SG_ID} "
 aws ec2 delete-security-group \
   --group-id ${SG_ID} \
   > ${tmp_loc}
-echo '✔️'
+echo -e "${OK_FMT}"
 
 rm -rf ${tmp_loc}
