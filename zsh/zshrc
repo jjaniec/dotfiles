@@ -8,6 +8,7 @@
 ZPLUG_DIR=/zsh/zplug
 ANTIGEN_DIR=/zsh/antigen
 DOTFILES_DIR=
+ENV_FILE=/.env.sh
 OS=$(uname -s)
 
 setopt autocd # If only a directory is entered, cd there
@@ -30,6 +31,13 @@ then
 	else
 		export DOTFILES_DIR=/dotfiles;
 	fi;
+fi;
+
+# Source env file variables
+
+if ls ${DOTFILES_DIR}${ENV_FILE} > /dev/null 2> /dev/null;
+then
+  source ${DOTFILES_DIR}${ENV_FILE}
 fi;
 
 # Source 42 specific dotfiles
