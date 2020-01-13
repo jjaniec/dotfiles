@@ -11,9 +11,10 @@ set -o pipefail
 TEMPLATE_DIR=${TEMPLATES_PATH}/${1}
 CURRENT_DIR=${PWD}
 
-if [ ${1} = "" ];
+if [ "${1}" = "" ];
 then
   echo "Usage: save_as_template.sh template_name"
+  exit 1
 fi;
 
 ls ${TEMPLATE_DIR} > /dev/null 2> /dev/null;
