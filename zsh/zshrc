@@ -18,7 +18,12 @@ setopt long_list_jobs
 setopt mark_dirs # Add "/" if completes directory
 setopt autopushd
 
+# Completion system
+autoload -U +X compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
+
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'	# Case insensitive auto-completion
+zstyle ':completion:*' menu select=2
 
 # Load dotfiles location
 
@@ -260,7 +265,7 @@ export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # Enable bat preview for fzf
-export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:50%' --color=dark --border --preview \"fzf_preview.sh {}\""
 
 # Enable coloration in less
 export LESS_TERMCAP_mb=$'\E[01;32m'
