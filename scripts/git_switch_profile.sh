@@ -43,7 +43,9 @@ then
 fi;
 
 
-git config --global user.name ${GIT_NAME}
-git config --global user.email ${GIT_EMAIL}
+git config --global --replace-all user.name "${GIT_NAME}"
+git config --global --replace-all user.email "${GIT_EMAIL}"
+git config --replace-all user.name "${GIT_NAME}"
+git config --replace-all user.email "${GIT_EMAIL}"
 
 echo "Switched git profile to '${GIT_NAME}' / '${GIT_EMAIL}'"
