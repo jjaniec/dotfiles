@@ -310,6 +310,13 @@ clone_repo() {
   cd ${GIT_DEST_DIR}/${src}/${project}
 }
 
+terraform-docs-0.12-docker() {
+  docker run --rm \
+    -v $PWD:/data \
+    cytopia/terraform-docs \
+  terraform-docs-012 md .
+}
+
 # Set git user.email / user.name
 
 git_switch_profile.sh > /dev/null
