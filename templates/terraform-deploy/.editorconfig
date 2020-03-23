@@ -1,0 +1,9 @@
+# https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# 2 spaces indent for tf files
+[*.tf]
+indent_style = space
+indent_size = 2
