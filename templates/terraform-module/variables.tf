@@ -17,12 +17,14 @@ variable "naming" {
 
 ### Networking
 
-variable "subnet_ids" {
-  type        = list(string)
-  description = "List of subnet ids to use for resources"
+variable "subnet_id" {
+  type        = string
+  description = "Subnet ids to use for resources"
+  default     = null
 }
 
-variable "security_group_ids" {
+variable "vpc_security_group_ids" {
   type        = list(string)
   description = "List of security groups ID to be associated with instances"
+  default     = null
 }

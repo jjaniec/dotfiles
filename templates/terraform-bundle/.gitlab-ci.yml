@@ -1,0 +1,27 @@
+image:
+  name: hashicorp/terraform:light
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+variables:
+  AWS_DEFAULT_REGION: eu-west-1
+
+before_script:
+  - terraform --version
+
+stages:
+  - fmt
+
+.tags: &tags
+  tags:
+    - gce
+    - docker
+    - linux
+
+fmt:
+  stage: fmt
+  script:
+    - terraform fmt -check
+  allow_failure: true
+  <<: *tags
