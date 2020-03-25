@@ -211,6 +211,13 @@ fi;
 
 #### Git config ####
 
+# Global git-template to auto-install pre-commit
+if command -v pre-commit > /dev/null && [ "$(git config --global init.templateDir)" != "$(eval echo '~/.git-template')" ];
+then
+  git config --global init.templateDir ~/.git-template
+  pre-commit init-templatedir ~/.git-template
+fi;
+
 # Global gitignore
 git config --global core.excludesfile ${DOTFILES_DIR}/git/.gitignore
 

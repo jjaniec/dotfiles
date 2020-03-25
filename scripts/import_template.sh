@@ -42,4 +42,5 @@ then
   exit 1
 fi;
 
+shopt -s dotglob
 rsync --progress -auvz ${TEMPLATE_DIR}/* .
