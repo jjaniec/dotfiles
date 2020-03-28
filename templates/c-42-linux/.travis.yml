@@ -1,0 +1,34 @@
+language: c
+
+sudo: true
+
+git:
+  depth: 1
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-8
+    - gcc-7
+    - gcc-4.8
+    - valgrind
+
+matrix:
+    include:
+        - os: linux
+          compiler: gcc-8
+          env: CXX=gcc-8
+        - os: linux
+          compiler: gcc-7
+          env: CXX=gcc-7
+        - os: linux
+          compiler: gcc-4.8
+          env: CXX=gcc-4.8
+    allow_failures:
+        - os: linux
+          compiler: gcc-4.8
+          env: CXX=gcc-4.8
+
+script: make CC=$CXX
