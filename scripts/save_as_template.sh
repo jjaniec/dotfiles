@@ -34,4 +34,5 @@ fi;
 
 mkdir ${TEMPLATE_DIR}
 
-rsync --progress -auvz ${CURRENT_DIR}/* ${TEMPLATE_DIR}
+shopt -s dotglob
+rsync --progress -auvz --exclude='.git' ${CURRENT_DIR}/* ${TEMPLATE_DIR}

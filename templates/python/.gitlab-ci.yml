@@ -1,0 +1,23 @@
+image:
+  name: python:3.7
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+stages:
+  - pre-tests
+
+.tags: &tags
+  tags:
+    - gce
+    - docker
+    - linux
+
+pep8-check:
+  stage: pre-tests
+  before_script:
+    - pip install pycodestyle
+  script:
+    - pycodestyle *.py
+  allow_failure: true
+  <<: *tags
