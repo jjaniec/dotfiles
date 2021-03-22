@@ -109,6 +109,7 @@ for vpc_index in ${!vpc_ids[@]};
 do
 	subnets=$(describe_vpc_resource_type ${vpc_ids[${vpc_index}]} "subnets")
 	instances=$(describe_vpc_resource_type ${vpc_ids[${vpc_index}]} "instances")
+  echo "${instances}"
 	nat_gateways=$(describe_vpc_resource_type ${vpc_ids[${vpc_index}]} "nat-gateways")
 	# Not filtering by subnet id cause it would slow down things
 

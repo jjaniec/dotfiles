@@ -3,7 +3,8 @@
 #set -o errexit
 #set -o pipefail
 #set -o nounset
-#set -o xtrace
+# set -o xtrace
+# set -o verbose
 
 ZPLUG_DIR=/zsh/zplug
 ANTIGEN_DIR=/zsh/antigen
@@ -42,7 +43,7 @@ fi;
 
 if ls ${DOTFILES_DIR}${ENV_FILE} > /dev/null 2> /dev/null;
 then
-  source ${DOTFILES_DIR}${ENV_FILE}
+	source ${DOTFILES_DIR}${ENV_FILE}
 fi;
 
 # Source 42 specific dotfiles
@@ -83,94 +84,87 @@ then
 
 		source ${ZPLUG_HOME}/init.zsh
 		zplug 'zplug/zplug', \
-      hook-build:'zplug --self-manage'
+			hook-build:'zplug --self-manage'
 
 		zplug "mafredri/zsh-async", \
-      from:github, \
-      depth:1
+			from:github, \
+			depth:1
 		zplug "sindresorhus/pure", \
-      use:pure.zsh, \
-      from:github, \
-      as:theme, \
-      depth:1
+			use:pure.zsh, \
+			from:github, \
+			as:theme, \
+			depth:1
 
 		zplug "zsh-users/zsh-autosuggestions", \
-      from:github, \
-      depth:1
+			from:github, \
+			depth:1
 		zplug "zsh-users/zsh-completions", \
-      from:github, \
-      depth:1
+			from:github, \
+			depth:1
 		zplug "zdharma/fast-syntax-highlighting", \
-      from:github, \
-      depth:1
+			from:github, \
+			depth:1
+
+		# zplug "plugins/asdf", \
+		# 	from:oh-my-zsh
 
 		zplug "ahmetb/kubectl-aliases", \
-      use:.kubectl_aliases
+			use:.kubectl_aliases
 		zplug "plugins/aws", \
-      from:oh-my-zsh
+			from:oh-my-zsh
 		zplug "djui/alias-tips", \
-      from:github
+			from:github
 
 		zplug "rupa/z", \
-      from:github, \
-      use:"z.sh", \
-      depth:1
+			from:github, \
+			use:"z.sh", \
+			depth:1
 
-    zplug "b4b4r07/enhancd", \
-      from:github, \
-      use:"init.sh", \
-      depth:1
-    ENHANCD_FILTER=fzf:fzy
+		zplug "b4b4r07/enhancd", \
+			from:github, \
+			use:"init.sh", \
+			depth:1
 
-    zplug "raylee/tldr", \
-      from:github, \
-      as:command, \
-      use:"tldr", \
-      depth:1
+		zplug "raylee/tldr", \
+			from:github, \
+			as:command, \
+			use:"tldr", \
+			depth:1
 
-    zplug "junegunn/fzf-bin", \
-      from:gh-r, \
-      as:command, \
-      rename-to:fzf, \
-      use:"*$(echo ${OS} | tr '[:upper:]' '[:lower:]')*amd64*"
-    zplug "junegunn/fzf", \
-      use:"shell/*.zsh", \
-      defer:2
-    zplug "junegunn/fzf", \
-      use:"bin/fzf-tmux", \
-      as:command, \
-      defer:2
+		zplug "junegunn/fzf-bin", \
+			from:gh-r, \
+			as:command, \
+			rename-to:fzf, \
+			use:"*$(echo ${OS} | tr '[:upper:]' '[:lower:]')*amd64*"
+		zplug "junegunn/fzf", \
+			use:"shell/*.zsh", \
+			defer:2
+		zplug "junegunn/fzf", \
+			use:"bin/fzf-tmux", \
+			as:command, \
+			defer:2
 
 		zplug "Tarrasch/zsh-autoenv"
 
-		zplug "lirantal/dockly", \
-			from:github, \
-			as:command, \
-			use:"index.js", \
-			rename-to:"dockly", \
-			hook-build:"npm install", \
-			depth:1, \
-			if:"(( $+commands[npm] ))"
+		zplug "paulirish/git-open", \
+			as:plugin
 
-    zplug "paulirish/git-open", \
-      as:plugin
-
-    zplug "sharkdp/bat",\
-      as:command, \
-      from:gh-r, \
-      rename-to:bat
+		# zplug "sharkdp/bat",\
+		# 	as:command, \
+		# 	from:gh-r, \
+		# 	rename-to:bat
 
 		if [ "${OS}" = "Linux" ];
 		then
-      ;
+			;
 		elif [ "${OS}" = "Darwin" ];
 		then
-      ;
+			;
 		fi;
 
 		if ! zplug check --verbose;
 		then
-		    echo;
+			echo;
 			zplug install;
 		fi;
 
@@ -209,13 +203,56 @@ then
 	fi;
 fi;
 
+#### asdf ####
+
+export ASDF_CONFIG_FILE="${DOTFILES_DIR}/asdf/asdfrc"
+export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=".tool-versions"
+export ASDF_DIR="$HOME/.asdf"
+export ASDF_DATA_DIR="$HOME/.asdf"
+
+function asdf_init_global_plugins() {
+	cp ${DOTFILES_DIR}/asdf/tool-versions $HOME/.tool-versions
+	asdf plugin add aws-iam-authenticator https://github.com/stefansedich/asdf-aws-iam-authenticator
+	# asdf plugin add aws-iam-authenticator
+	asdf plugin add bat
+	asdf plugin add buildpack
+	asdf plugin add container-diff
+	asdf plugin add eksctl
+	asdf plugin add hadolint
+	asdf plugin add helm
+	asdf plugin add jq
+	asdf plugin add k9s
+	asdf plugin add kubectl
+	asdf plugin add packer
+	asdf plugin add pre-commit
+	asdf plugin add scaleway-cli
+	asdf plugin add skaffold
+	asdf plugin add terraform
+	asdf plugin add tmux
+	asdf plugin add yarn
+	asdf plugin add yq
+	asdf install
+}
+
+if ! [ -d ${ASDF_DIR} ];
+then
+	git clone https://github.com/asdf-vm/asdf.git ${ASDF_DIR}
+	git -C ${ASDF_DIR} checkout "$(git -C ${ASDF_DIR} describe --abbrev=0 --tags)"
+	. $HOME/.asdf/asdf.sh
+	asdf_init_global_plugins
+fi;
+. $HOME/.asdf/asdf.sh
+
+# append completions to fpath
+fpath=(${ASDF_DIR}/completions $fpath)
+
 #### Git config ####
 
 # Global git-template to auto-install pre-commit
 if command -v pre-commit > /dev/null && [ "$(git config --global init.templateDir)" != "$(eval echo '~/.git-template')" ];
 then
-  git config --global init.templateDir ~/.git-template
-  pre-commit init-templatedir ~/.git-template
+	git config --global init.templateDir ~/.git-template
+	pre-commit init-templatedir ~/.git-template
 fi;
 
 # Global gitignore
@@ -250,6 +287,7 @@ preexec_functions+=expand_aliases
 export PATH="$PATH:$DOTFILES_DIR/bin"
 
 #export WAKATIME_HOME=$DOTFILES_DIR/zsh/.wakatime.cfg
+export SERVERLESS_PLATFORM_VENDOR=aws
 
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias psc="ps xawf -eo pid,user,cgroup,args"
@@ -257,6 +295,9 @@ alias vcat="/bin/cat"
 alias l='ls -laG'
 alias kcn='kubectl config set-context --current --namespace'
 alias kruncurl='kubectl run -it --restart=Never --rm --image=appropriate/curl curl --'
+alias aws_sts_export_assume_role.sh="source ${DOTFILES_DIR}/scripts/aws_sts_export_assume_role.sh"
+alias aws_clear_env.sh="source ${DOTFILES_DIR}/scripts/aws_clear_env.sh"
+alias aws_ec2_describe_instances_table='aws ec2 describe-instances  --query '"\"Reservations[*].Instances[*].{name: Tags[?Key=='Name'] | [0].Value, instance_id: InstanceId, ip_address: PrivateIpAddress, state: State.Name}\""' --output table'
 
 if [ "$(uname -s)" = "Linux" ];
 then
@@ -284,6 +325,9 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;36m'
 export LESS=-r
 
+# Use fzf or fzy w/ enchancd
+export ENHANCD_FILTER=fzf:fzy
+
 #### Scripts ####
 
 # Export templates path
@@ -307,22 +351,53 @@ fi;
 
 # Clone repo and cd into it
 clone_repo() {
-  GIT_DEST_DIR="${HOME}"
+	GIT_DEST_DIR="${HOME}"
 
-  src=$(echo ${1} | cut -d '/' -f 3- | rev | cut -d '/' -f 2- | rev)
-  project=$(echo ${1} | rev | cut -d '/' -f 1 | rev | cut -d '.' -f 1)
+	echo "${1}" | grep -q 'git@' 2> /dev/null
 
-  mkdir -p "${GIT_DEST_DIR}/${src}"
-  git -C ${GIT_DEST_DIR}/${src} clone ${1}
-  cd ${GIT_DEST_DIR}/${src}/${project}
+	if [ $? -eq 1 ];
+	then
+		# http url
+		src=$(echo ${1} | cut -d '/' -f 3- | rev | cut -d '/' -f 2- | rev);
+	else
+		# ssh
+		src=$(echo ${1} | cut -d '@' -f 2- | tr ':' '/' | rev | cut -d '/' -f 2- | rev)
+	fi;
+	project=$(echo ${1} | rev | cut -d '/' -f 1 | rev | cut -d '.' -f 1)
+
+	mkdir -p "${GIT_DEST_DIR}/${src}"
+	git -C ${GIT_DEST_DIR}/${src} clone ${1}
+	cd ${GIT_DEST_DIR}/${src}/${project}
 }
 
 terraform-docs-0.12-docker() {
-  docker run --rm \
-    -v $PWD:/data \
-    cytopia/terraform-docs \
-  terraform-docs-012 md .
+	docker run --rm \
+		-v $PWD:/data \
+		cytopia/terraform-docs \
+	terraform-docs-012 md .
 }
+
+aws_ssm_start_session() {
+	TABLE=$(aws_ec2_describe_instances_table | grep running);
+	for i in $@;
+	do
+		TABLE=$(echo ${TABLE} | grep -i $i);
+	done;
+  TABLE=$(echo ${TABLE} | head -n 1)
+	echo "[*] Starting session on instance $(echo ${TABLE} | cut -d '|' -f4 | tr -d ' ') / $(echo ${TABLE} | cut -d '|' -f3 | tr -d ' ') / $(echo ${TABLE} | cut -d '|' -f2 | tr -d ' ')"
+	aws ssm start-session --target $(echo ${TABLE} | cut -d '|' -f2 | tr -d ' ')
+}
+
+command -v skbn
+if [ $? -ne 0 ];
+then
+skbn() {
+  docker run \
+    --rm \
+    -it \
+    -v $HOME/.aws:'$HOME/.aws'
+}
+fi;
 
 # Set git user.email / user.name
 
