@@ -3,7 +3,16 @@
 set -o pipefail
 #set -o errexit
 
-ROLE_ARN=${1}
+echo "${1}" | grep -q -E 'arn:aws:iam::[0-9]{12}:role/[a-zA-Z]+'
+
+if [ $? -eq 0 ];
+then
+	ROLE_ARN=${1}
+else
+	ROLE_NAME="${1}"
+	ARN_PREFIX="arn:aws:iam::$(aws sts get-caller-identity | jq -r '.Account'):role/"
+	ROLE_ARN="${ARN_PREFIX}${ROLE_NAME}"
+fi;
 
 temp_role=$(aws sts assume-role \
   --role-arn ${ROLE_ARN} \
