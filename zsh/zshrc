@@ -213,6 +213,7 @@ export ASDF_DATA_DIR="$HOME/.asdf"
 function asdf_init_global_plugins() {
 	cp ${DOTFILES_DIR}/asdf/tool-versions $HOME/.tool-versions
 	asdf plugin add aws-iam-authenticator https://github.com/stefansedich/asdf-aws-iam-authenticator
+	asdf plugin add arkade https://github.com/asdf-community/asdf-arkade
 	# asdf plugin add aws-iam-authenticator
 	asdf plugin add bat
 	asdf plugin add buildpack
@@ -298,6 +299,7 @@ alias kruncurl='kubectl run -it --restart=Never --rm --image=appropriate/curl cu
 alias aws_sts_export_assume_role.sh="source ${DOTFILES_DIR}/scripts/aws_sts_export_assume_role.sh"
 alias aws_clear_env.sh="source ${DOTFILES_DIR}/scripts/aws_clear_env.sh"
 alias aws_ec2_describe_instances_table='aws ec2 describe-instances  --query '"\"Reservations[*].Instances[*].{name: Tags[?Key=='Name'] | [0].Value, instance_id: InstanceId, ip_address: PrivateIpAddress, state: State.Name}\""' --output table'
+alias aws_create_dev_c9_environment='aws cloud9 create-environment-ec2 --name DEV_UL_TOOLS-CLOUD9 --description "Temporary environment" --instance-type t2.medium --subnet-id subnet-2c730249 --owner-arn arn:aws:iam::883029375205:user/joffrey.janiec.ext@veolia.com'
 
 if [ "$(uname -s)" = "Linux" ];
 then
