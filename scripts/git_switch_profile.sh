@@ -9,6 +9,7 @@ set -o pipefail
 #set -o xtrace
 
 PROFILE_NAMES=(
+  "github"
   "42"
 )
 
@@ -17,6 +18,7 @@ DEFAULT_PROFILE_NAME="${PROFILE_NAMES[0]}"
 GIT_NAME="Joffrey Janiec"
 
 PROFILE_EMAILS=(
+  "16088893+jjaniec@users.noreply.github.com"
   "jjaniec@student.42.fr"
 )
 
