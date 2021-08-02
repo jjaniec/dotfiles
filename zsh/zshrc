@@ -218,6 +218,7 @@ function asdf_init_global_plugins() {
 	asdf plugin add bat
 	asdf plugin add buildpack
 	asdf plugin add container-diff
+	asdf plugin add delta
 	asdf plugin add eksctl
 	asdf plugin add hadolint
 	asdf plugin add helm
