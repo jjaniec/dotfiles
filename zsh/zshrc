@@ -225,8 +225,10 @@ function asdf_init_global_plugins() {
 	asdf plugin add jq
 	asdf plugin add k9s
 	asdf plugin add kubectl
+	asdf plugin add nodejs
 	asdf plugin add packer
 	asdf plugin add pre-commit
+	asdf plugin add python
 	asdf plugin add scaleway-cli
 	asdf plugin add skaffold
 	asdf plugin add terraform
@@ -405,3 +407,11 @@ fi;
 # Set git user.email / user.name
 
 git_switch_profile.sh > /dev/null
+
+# Set GOPATH & update PATH if go is installed
+
+if command -v go > /dev/null 2>&1;
+then
+	export GOPATH=$(go env GOPATH)
+	export PATH="$PATH:$GOPATH/bin"
+fi

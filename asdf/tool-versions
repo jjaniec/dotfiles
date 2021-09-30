@@ -1,23 +1,24 @@
-aws-iam-authenticator 0.5.2
-awscli 2.2.13
+aws-iam-authenticator 0.5.3
+awscli 2.2.40
 arkade 0.7.18
-bat 0.17.1
+bat 0.18.3
 buildpack 0.17.0
 container-diff 0.16.0
-delta 0.8.0
+delta 0.8.3
 eksctl 0.38.0
 hadolint v1.22.1
-helm 3.6.2
-#jq 1.6
+helm 3.7.0
+# jq 1.6
 neovim nightly
-nodejs 15.12.0
-k9s 0.24.14
-kubectl 1.21.3
+nodejs 16.10.0 system
+k9s 0.24.15
+kubectl 1.22.2
 packer 1.7.0
-pre-commit 2.13.0
+pre-commit 2.15.0
+python 3.7.10 system
 scaleway-cli 2.2.4
 skaffold 1.20.0
-terraform 1.0.3
-tmux 3.1c
-yarn 1.22.10
-yq 4.0.0
+terraform 1.0.7
+tmux 3.2a
+yarn 1.22.11
+# yq 4.0.0
