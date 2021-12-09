@@ -165,7 +165,7 @@ then
 		if ! zplug check --verbose;
 		then
 			echo;
-			zplug install;
+			zplug install || true;
 		fi;
 
 		zplug load
@@ -212,29 +212,35 @@ export ASDF_DATA_DIR="$HOME/.asdf"
 
 function asdf_init_global_plugins() {
 	cp ${DOTFILES_DIR}/asdf/tool-versions $HOME/.tool-versions
-	asdf plugin add aws-iam-authenticator https://github.com/stefansedich/asdf-aws-iam-authenticator
-	asdf plugin add arkade https://github.com/asdf-community/asdf-arkade
-	# asdf plugin add aws-iam-authenticator
+	asdf plugin add aws-iam-authenticator
+	asdf plugin add awscli
+	asdf plugin add arkade
 	asdf plugin add bat
 	asdf plugin add buildpack
 	asdf plugin add container-diff
-	asdf plugin add delta
 	asdf plugin add eksctl
 	asdf plugin add hadolint
 	asdf plugin add helm
-	asdf plugin add jq
 	asdf plugin add k9s
 	asdf plugin add kubectl
+	asdf plugin add neovim
 	asdf plugin add nodejs
 	asdf plugin add packer
 	asdf plugin add pre-commit
 	asdf plugin add python
 	asdf plugin add scaleway-cli
-	asdf plugin add skaffold
 	asdf plugin add terraform
 	asdf plugin add tmux
 	asdf plugin add yarn
-	asdf plugin add yq
+
+	if [ "$(arch)" != "arm64" ];
+	then
+		asdf plugin add delta
+		asdf plugin add jq
+		asdf plugin add skaffold
+		asdf plugin add yq
+	fi
+
 	asdf install
 }
 
