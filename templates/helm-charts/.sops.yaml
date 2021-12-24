@@ -1,0 +1,7 @@
+creation_rules:
+  - kms: 'arn:aws:kms:eu-west-1:123412341234:key/...'
+    path_regex: .*/.*.secret[s]?.env1.yaml
+  - kms: 'arn:aws:kms:eu-west-1:567856785678:key/...'
+    path_regex: .*/.*.secret[s]?.env2.yaml
+  - pgp: '....'
+    path_regex: .*/.*.secret[s]?.env3.yaml

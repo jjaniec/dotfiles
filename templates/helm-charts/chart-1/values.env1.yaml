@@ -1,0 +1,12 @@
+serviceAccount:
+  name: sa
+  annotations:
+    {eks.amazonaws.com/role-arn: "arn:aws:iam::123412341234:role/app1-iam-role"}
+
+
+resources:
+  limits:
+    memory: 250Mi
+  requests:
+    cpu: 50m
+    memory: 50Mi
