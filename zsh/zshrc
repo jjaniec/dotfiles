@@ -101,7 +101,7 @@ then
 		zplug "zsh-users/zsh-completions", \
 			from:github, \
 			depth:1
-		zplug "zdharma/fast-syntax-highlighting", \
+		zplug "zdharma-continuum/fast-syntax-highlighting", \
 			from:github, \
 			depth:1
 
@@ -338,6 +338,11 @@ export LESS=-r
 
 # Use fzf or fzy w/ enchancd
 export ENHANCD_FILTER=fzf:fzy
+
+#### Load completions
+
+# Kubectl
+command -v kubectl > /dev/null 2>&1 && source <(kubectl completion zsh)
 
 #### Scripts ####
 

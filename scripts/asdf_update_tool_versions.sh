@@ -13,8 +13,16 @@ set -o pipefail
 TOOL_VERSIONS_FILE=${1:-"$PWD/.tool-versions"}
 FMT_TOOL_VERSIONS_TEMP_FILE=$(mktemp)
 NEW_TOOL_VERSIONS_CONTENT_TEMP_FILE=$(mktemp)
+TOOL_VERSIONS_FILE="$HOME/.tool-versions"
 
-cat ~/.tool-versions | grep -E '^[a-zA-Z-]+ ([ ]?[a-z.0-9]+){1,}$' > "${FMT_TOOL_VERSIONS_TEMP_FILE}"
+rm "${NEW_TOOL_VERSIONS_CONTENT_TEMP_FILE}" || true
+
+if [ -f "${PWD}/.tool-versions" ];
+then
+  TOOL_VERSIONS_FILE="${PWD}/.tool-versions"
+fi;
+
+cat "${TOOL_VERSIONS_FILE}" | grep -E '^[a-zA-Z-]+ ([ ]?[a-z.0-9]+){1,}$' > "${FMT_TOOL_VERSIONS_TEMP_FILE}"
 
 while read i;
 do
@@ -46,6 +54,4 @@ do
 done < "${TOOL_VERSIONS_FILE}"
 
 cat "${NEW_TOOL_VERSIONS_CONTENT_TEMP_FILE}"
-# mv "${TOOL_VERSIONS_FILE}" "${TOOL_VERSIONS_FILE}.bak"
-# mv "${TEMP_FILE}" ${TOOL_VERSIONS_FILE}
-
+rm "${NEW_TOOL_VERSIONS_CONTENT_TEMP_FILE}"
