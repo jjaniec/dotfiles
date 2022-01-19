@@ -221,6 +221,7 @@ function asdf_init_global_plugins() {
 	asdf plugin add eksctl
 	asdf plugin add hadolint
 	asdf plugin add helm
+	asdf plugin add krew
 	asdf plugin add k9s
 	asdf plugin add kubectl
 	asdf plugin add neovim
@@ -319,6 +320,8 @@ then
 fi;
 
 export AWS_DEFAULT_REGION='eu-west-1'
+
+export GPG_TTY=$(tty)
 
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
@@ -425,4 +428,14 @@ if command -v go > /dev/null 2>&1;
 then
 	export GOPATH=$(go env GOPATH)
 	export PATH="$PATH:$GOPATH/bin"
+fi
+
+# Set krew plugins path in $PATH
+
+if [ -d "$HOME/.krew" ];
+then
+  export PATH="$PATH:${KREW_ROOT:-$HOME/.krew}/bin"
+elif [ "$(asdf list krew 2>/dev/null)" != "0" ]
+then
+  export PATH="$PATH:$(asdf where krew)/bin"
 fi
