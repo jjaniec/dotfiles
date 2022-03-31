@@ -22,3 +22,5 @@ terraform 1.1.0
 tmux 3.2a
 yarn 1.22.17
 yq 4.0.0
+terraform-docs 0.16.0
+tfsec 1.15.2

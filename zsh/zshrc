@@ -297,10 +297,14 @@ preexec_functions+=expand_aliases
 # Add dotfiles/bin to path
 export PATH="$PATH:$DOTFILES_DIR/bin"
 
+# Add .local/bin to path
+export PATH="$PATH:$HOME/.local/bin"
+
 #export WAKATIME_HOME=$DOTFILES_DIR/zsh/.wakatime.cfg
 export SERVERLESS_PLATFORM_VENDOR=aws
 
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
+alias gs="git status"
 alias psc="ps xawf -eo pid,user,cgroup,args"
 alias vcat="/bin/cat"
 alias l='ls -laG'
@@ -420,7 +424,7 @@ fi;
 
 # Set git user.email / user.name
 
-git_switch_profile.sh > /dev/null
+# git_switch_profile.sh > /dev/null
 
 # Set GOPATH & update PATH if go is installed
 
