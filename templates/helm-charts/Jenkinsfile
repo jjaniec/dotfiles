@@ -1,0 +1,62 @@
+pipeline {
+    agent {
+        kubernetes {
+            label 'python-awscli'
+        }
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '15'))
+    }
+
+    stages {
+
+        stage('Setup variables') {
+            steps {
+				sh """
+				aws --version
+				python3 --version
+				"""
+            }
+        }
+
+        stage('Install tools') {
+			steps {
+				script {
+					sh """
+					echo 'Installing pre-commit'
+					pip3 install pre-commit
+
+					echo 'Installing arkade'
+                    curl -sLS https://get.arkade.dev | sh
+                    export PATH="$PATH:$HOME/.arkade/bin"
+                    arkade get kubectl
+                    arkade get helm
+					helm plugin install https://github.com/jkroepke/helm-secrets --version v3.12.0
+
+					echo 'Installing sops'
+					curl -Lo sops https://github.com/mozilla/sops/releases/download/v3.7.2/sops-v3.7.2.linux.amd64
+					chmod +x ./sops
+					mv ./sops /usr/local/bin/sops
+
+                    kubectl version
+                    helm version
+					helm secrets version
+					sops --version
+
+					pre-commit install-hooks
+					"""
+				}
+			}
+		}
+
+		stage('pre-commit check') {
+			steps {
+                sh """
+                pre-commit run --all-files
+                """
+			}
+		}
+
+    }
+}

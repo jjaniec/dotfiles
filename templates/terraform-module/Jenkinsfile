@@ -1,0 +1,71 @@
+pipeline {
+    agent {
+        label 'python-terraform-awscli'
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '15'))
+    }
+
+    environment {
+        AWS_DEFAULT_REGION = "eu-west-1"
+    }
+
+    stages {
+
+        stage('Setup variables') {
+            steps {
+				sh """
+				terraform version
+				aws --version
+				python3 --version
+				"""
+            }
+        }
+
+        stage('Install tools') {
+			steps {
+				script {
+					sh """
+					echo 'Installing pre-commit'
+					pip3 install pre-commit
+
+					echo 'Installing arkade'
+                    curl -sLS https://get.arkade.dev | sh
+                    export PATH="$PATH:$HOME/.arkade/bin"
+                    arkade get kubectl
+                    arkade get helm
+
+                    echo 'Installing terraform-docs for pre-commit checks'
+                    curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-`uname`-amd64.tar.gz
+                    tar -xzf terraform-docs.tar.gz
+                    chmod +x terraform-docs
+                    mv terraform-docs /usr/local/bin/terraform-docs
+
+                    echo 'Installing tfsec'
+                    curl -Lo ./tfsec https://github.com/aquasecurity/tfsec/releases/download/v1.15.2/tfsec-linux-amd64
+                    chmod +x ./tfsec
+                    mv ./tfsec /usr/local/bin/tfsec
+
+                    kubectl version
+                    helm version
+                    terraform-docs version
+                    tfsec -v
+
+					pre-commit install-hooks
+					"""
+				}
+			}
+		}
+
+		stage('pre-commit check') {
+			steps {
+                sh """
+                pwd
+                pre-commit run --all-files
+                """
+			}
+		}
+
+    }
+}

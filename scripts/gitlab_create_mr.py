@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 #d Create a merge request on a $GITLAB_URL server
 
 #u GITLAB_URL='https://example.com/' GITLAB_TOKEN='' ./gitlab_create_mr.py repo_subdir/repo dev master

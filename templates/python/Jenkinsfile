@@ -1,0 +1,46 @@
+pipeline {
+    agent {
+        kubernetes {
+            label 'python'
+        }
+    }
+
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '15'))
+    }
+
+    // environment {}
+
+    stages {
+
+        stage('Setup variables') {
+            steps {
+				sh """
+				python3 --version
+				"""
+            }
+        }
+
+        stage('Install tools') {
+			steps {
+				script {
+					sh """
+					echo 'Installing pre-commit'
+					pip3 install pre-commit
+
+					pre-commit install-hooks
+					"""
+				}
+			}
+		}
+
+		stage('pre-commit check') {
+			steps {
+                sh """
+                pre-commit run --all-files
+                """
+			}
+		}
+
+    }
+}
