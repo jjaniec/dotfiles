@@ -4,28 +4,39 @@ fail_fast: false
 default_stages: [commit, push]
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v2.5.0
+  rev: v4.1.0
   hooks:
   - id: check-yaml
 
 - repo: https://github.com/jumanjihouse/pre-commit-hooks
-  rev: 1.11.2
+  rev: 2.1.6
   hooks:
   - id: git-check
 
 - repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.1.7
+  rev: v1.1.13
   hooks:
   - id: remove-crlf
 
 - repo: https://github.com/antonbabenko/pre-commit-terraform
-  rev: v1.27.0
+  rev: v1.64.1
   hooks:
   - id: terraform_fmt
   - id: terraform_validate
   - id: terraform_docs
+  - id: terraform_tfsec
+    args:
+      - --args=--config-file=__GIT_WORKING_DIR__/.tfsec.json
+      # - --args=--tfvars-file env.terraform.tfvars
 
 - repo: https://gitlab.com/devopshq/gitlab-ci-linter
-  rev: v1.0.0
+  rev: v1.0.3
   hooks:
   - id: gitlab-ci-linter
+
+- repo: https://github.com/Yelp/detect-secrets
+  rev: v1.2.0
+  hooks:
+  - id: detect-secrets
+    args: ["--disable-plugin", "Base64HighEntropyString", "--disable-plugin", "KeywordDetector", "--exclude-files", "README.md"]
+

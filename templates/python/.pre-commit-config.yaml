@@ -52,7 +52,7 @@ repos:
       args: [--max-line-length=120]
 
 - repo: https://gitlab.com/devopshq/gitlab-ci-linter
-  rev: v1.0.0
+  rev: v1.0.3
   hooks:
   - id: gitlab-ci-linter
 
@@ -60,3 +60,10 @@ repos:
   rev: v0.1.0
   hooks:
   - id: dockerfilelint
+
+- repo: https://github.com/Yelp/detect-secrets
+  rev: v1.2.0
+  hooks:
+  - id: detect-secrets
+    args: ["--disable-plugin", "Base64HighEntropyString", "--disable-plugin", "KeywordDetector", "--exclude-files", "README.md"]
+
