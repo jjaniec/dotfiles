@@ -1,0 +1,41 @@
+[core]
+	excludesfile = /Users/jjaniec/dotfiles/git/.gitignore
+
+[alias]
+	change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ \\\"$`echo $VAR`\\\" = '$OLD' ]]; then export $VAR='$NEW'; fi\" $@; }; f "
+
+[credential]
+	helper = osxkeychain
+
+[user]
+  email = "16088893+jjaniec@users.noreply.github.com"
+  name = "Joffrey JANIEC"
+  signingkey = "1DECE5B24F57689BD378285E5C1C29AE37A4CE7C"
+  defaultbranch = "master"
+
+[includeIf "gitdir:/Users/jjaniec/github.com/"]
+  path = /Users/jjaniec/github.com/.gitconfig
+
+[includeIf "gitdir:/Users/jjaniec/bitbucket.org/"]
+  path = /Users/jjaniec/bitbucket.org/.gitconfig
+
+[init]
+	templateDir = /Users/jjaniec/.git-template
+
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = side-by-side line-numbers decorations
+    whitespace-error-style = 22 reverse
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none

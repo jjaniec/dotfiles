@@ -1,16 +1,15 @@
 {
   // Theming / Editor settings
-  "workbench.colorTheme": "Monokai",
+  "workbench.colorTheme": "Github Contrast (rainglow)",
   "workbench.panel.location": "bottom",
   "explorer.confirmDragAndDrop": false,
   "explorer.confirmDelete": false,
-  "window.zoomLevel": -1,
   "editor.renderWhitespace": "all",
   "editor.insertSpaces": false,
   "editor.tabCompletion": true,
   "editor.renderFinalNewline": false,
   "files.insertFinalNewline": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   // Telemetry
   "terraform.telemetry.enabled": false,
   // Extensions
@@ -46,6 +45,36 @@
   "[json]": {},
   "[c]": {
     "editor.formatOnSave": false
-  }
-}
+  },
+  "[h]": {
+    "editor.formatOnSave": false
+  },
+  "tabnine.experimentalAutoImports": true,
+  "aws.samcli.location": "/usr/local/bin/sam",
+  "vsicons.dontShowNewVersionMessage": true,
+  "git.autofetchPeriod": 1800000000,
+  "git.autorefresh": false,
+  "git.terminalAuthentication": false,
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter.notebook.ipynb"
+  },
+  "workbench.iconTheme": "vscode-icons",
+  "editor.inlineSuggest.enabled": true,
+  "github.copilot.enable": {
 
+    "*": true,
+    "python": true,
+    "yaml": true,
+    "plaintext": true,
+    "markdown": true,
+    "jenkinsfile": true
+  },
+  "redhat.telemetry.enabled": false,
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
+  },
+  "security.workspace.trust.untrustedFiles": "open",
+  "window.zoomLevel": -1,
+  "editor.accessibilitySupport": "off",
+  "bracket-pair-colorizer-2.depreciation-notice": false
+}

@@ -1,3 +1,7 @@
+# Fig pre block. Keep at the top of this file.
+export PATH="${PATH}:${HOME}/.local/bin"
+eval "$(fig init zsh pre)"
+
 #### Setup
 
 #set -o errexit
@@ -443,3 +447,7 @@ elif [ "$(asdf list krew 2>/dev/null)" != "0" ]
 then
   export PATH="$PATH:$(asdf where krew)/bin"
 fi
+
+# Fig post block. Keep at the bottom of this file.
+eval "$(fig init zsh post)"
+

@@ -1,0 +1,9 @@
+.terraform
+terraform.tfstate
+venv
+.DS_Store
+node_modules
+*-dump.txt
+workspace.tar.gz
+*venv*
+*virtualenv*
