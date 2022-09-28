@@ -131,11 +131,11 @@ then
 		use:"tldr", \
 		depth:1
 
-	zplug "junegunn/fzf-bin", \
-		from:gh-r, \
-		as:command, \
-		rename-to:fzf, \
-		use:"*$(echo ${OS} | tr '[:upper:]' '[:lower:]')*amd64*"
+	# zplug "junegunn/fzf-bin", \
+	# 	from:gh-r, \
+	# 	as:command, \
+	# 	rename-to:fzf, \
+	# 	use:"*$(echo ${OS} | tr '[:upper:]' '[:lower:]')*amd64*"
 	zplug "junegunn/fzf", \
 		use:"shell/*.zsh", \
 		defer:2
@@ -352,10 +352,11 @@ command -v kubectl > /dev/null 2>&1 && source <(kubectl completion zsh)
 #### Scripts ####
 
 # Export templates path
-export TEMPLATES_PATH="${DOTFILES_DIR}/templates"
+export TEMPLATES_PATH="${HOME}/dotfiles/templates"
 
 # Add local dotfiles scripts to path
-export PATH="${PATH}:${DOTFILES_DIR}/scripts"
+export SCRIPTS_PATH="${HOME}/dotfiles/scripts"
+export PATH="${PATH}:${SCRIPTS_PATH}"
 
 # Source aws-cli auto-completion script
 if command -v aws_zsh_completer.sh > /dev/null 2>&1;
@@ -402,7 +403,7 @@ aws_ssm_start_session() {
 	aws ssm start-session --target $(echo ${TABLE} | cut -d '|' -f2 | tr -d ' ')
 }
 
-command -v skbn
+command -v skbn > /dev/null 2>&1
 if [ $? -ne 0 ];
 then
 skbn() {

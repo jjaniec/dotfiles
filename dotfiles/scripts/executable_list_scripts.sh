@@ -40,7 +40,7 @@ find_longest_element() {
   echo $r
 }
 
-for i in $DOTFILES_DIR/scripts/*;
+for i in ${SCRIPTS_PATH}/*;
 do
   if [ ${i} = ${0} ];
   then
