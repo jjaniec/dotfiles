@@ -1,18 +1,14 @@
-# Fig pre block. Keep at the top of this file.
-export PATH="${PATH}:${HOME}/.local/bin"
-eval "$(fig init zsh pre)"
-
 #### Setup
 
-#set -o errexit
-#set -o pipefail
-#set -o nounset
+# set -o errexit
+# set -o pipefail
+# set -o nounset
 # set -o xtrace
 # set -o verbose
 
 ZPLUG_DIR=/zsh/zplug
 ANTIGEN_DIR=/zsh/antigen
-DOTFILES_DIR=$HOME/.local/share/chezmoi
+export DOTFILES_DIR=$HOME/.local/share/chezmoi
 ENV_FILE=$HOME/.env.sh
 OS=$(uname -s)
 
@@ -76,135 +72,135 @@ fi;
 
 if [ -n "$DOTFILES_DIR" ];
 then
-	if command -v awk > /dev/null && ! [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ];
+	# if command -v awk > /dev/null && ! [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ];
 
+	# then
+	export ZPLUG_HOME=${DOTFILES_DIR}${ZPLUG_DIR}/.zplug
+
+	if ! [ -d ${ZPLUG_HOME} ];
 	then
-		export ZPLUG_HOME=${DOTFILES_DIR}${ZPLUG_DIR}/.zplug
-
-		if ! [ -d ${ZPLUG_HOME} ];
-		then
-			git clone https://github.com/zplug/zplug ${ZPLUG_HOME}
-		fi;
-
-		source ${ZPLUG_HOME}/init.zsh
-		zplug 'zplug/zplug', \
-			hook-build:'zplug --self-manage'
-
-		zplug "mafredri/zsh-async", \
-			from:github, \
-			depth:1
-		zplug "sindresorhus/pure", \
-			use:pure.zsh, \
-			from:github, \
-			as:theme, \
-			depth:1
-
-		zplug "zsh-users/zsh-autosuggestions", \
-			from:github, \
-			depth:1
-		zplug "zsh-users/zsh-completions", \
-			from:github, \
-			depth:1
-		zplug "zdharma-continuum/fast-syntax-highlighting", \
-			from:github, \
-			depth:1
-
-		# zplug "plugins/asdf", \
-		# 	from:oh-my-zsh
-
-		zplug "ahmetb/kubectl-aliases", \
-			use:.kubectl_aliases
-		zplug "plugins/aws", \
-			from:oh-my-zsh
-		zplug "djui/alias-tips", \
-			from:github
-
-		zplug "rupa/z", \
-			from:github, \
-			use:"z.sh", \
-			depth:1
-
-		zplug "b4b4r07/enhancd", \
-			from:github, \
-			use:"init.sh", \
-			depth:1
-
-		zplug "raylee/tldr", \
-			from:github, \
-			as:command, \
-			use:"tldr", \
-			depth:1
-
-		zplug "junegunn/fzf-bin", \
-			from:gh-r, \
-			as:command, \
-			rename-to:fzf, \
-			use:"*$(echo ${OS} | tr '[:upper:]' '[:lower:]')*amd64*"
-		zplug "junegunn/fzf", \
-			use:"shell/*.zsh", \
-			defer:2
-		zplug "junegunn/fzf", \
-			use:"bin/fzf-tmux", \
-			as:command, \
-			defer:2
-
-		zplug "Tarrasch/zsh-autoenv"
-
-		zplug "paulirish/git-open", \
-			as:plugin
-
-		# zplug "sharkdp/bat",\
-		# 	as:command, \
-		# 	from:gh-r, \
-		# 	rename-to:bat
-
-		if [ "${OS}" = "Linux" ];
-		then
-			;
-		elif [ "${OS}" = "Darwin" ];
-		then
-			;
-		fi;
-
-		if ! zplug check --verbose;
-		then
-			echo;
-			zplug install || true;
-		fi;
-
-		zplug load
-	else
-		if ! [ -f ${DOTFILES_DIR}${ANTIGEN_DIR}/antigen.zsh ];
-		then
-			git clone https://github.com/zsh-users/antigen ${DOTFILES_DIR}${ANTIGEN_DIR}
-			git -C $DOTFILES_DIR$ANTIGEN_DIR checkout develop
-		fi;
-		git -C $DOTFILES_DIR$ANTIGEN_DIR fetch origin develop 2> /dev/null
-		git -C $DOTFILES_DIR$ANTIGEN_DIR diff --exit-code origin/develop
-		if [ $? != 0 ];
-		then
-			echo "\e[32mUpdating antigen...\e[39m"
-			git -C $DOTFILES_DIR$ANTIGEN_DIR merge origin/develop
-		fi;
-
-		source $DOTFILES_DIR$ANTIGEN_DIR/antigen.zsh
-
-		# Pure theme
-		antigen bundle mafredri/zsh-async
-		antigen bundle sindresorhus/pure
-
-		# Additional features
-		antigen bundle zsh-users/zsh-autosuggestions
-		antigen bundle zsh-users/zsh-completions
-		antigen bundle zdharma/fast-syntax-highlighting
-
-		#antigen bundle sobolevn/wakatime-zsh-plugin
-
-		# Additional commands
-		antigen bundle eendroroy/zed-zsh
-
-		antigen apply
+		git clone https://github.com/zplug/zplug ${ZPLUG_HOME}
 	fi;
+
+	source ${ZPLUG_HOME}/init.zsh
+	zplug 'zplug/zplug', \
+		hook-build:'zplug --self-manage'
+
+	zplug "mafredri/zsh-async", \
+		from:github, \
+		depth:1
+	zplug "sindresorhus/pure", \
+		use:pure.zsh, \
+		from:github, \
+		as:theme, \
+		depth:1
+
+	zplug "zsh-users/zsh-autosuggestions", \
+		from:github, \
+		depth:1
+	zplug "zsh-users/zsh-completions", \
+		from:github, \
+		depth:1
+	zplug "zdharma-continuum/fast-syntax-highlighting", \
+		from:github, \
+		depth:1
+
+	# zplug "plugins/asdf", \
+	# 	from:oh-my-zsh
+
+	zplug "ahmetb/kubectl-aliases", \
+		use:.kubectl_aliases
+	zplug "plugins/aws", \
+		from:oh-my-zsh
+	zplug "djui/alias-tips", \
+		from:github
+
+	zplug "rupa/z", \
+		from:github, \
+		use:"z.sh", \
+		depth:1
+
+	zplug "b4b4r07/enhancd", \
+		from:github, \
+		use:"init.sh", \
+		depth:1
+
+	zplug "raylee/tldr", \
+		from:github, \
+		as:command, \
+		use:"tldr", \
+		depth:1
+
+	zplug "junegunn/fzf-bin", \
+		from:gh-r, \
+		as:command, \
+		rename-to:fzf, \
+		use:"*$(echo ${OS} | tr '[:upper:]' '[:lower:]')*amd64*"
+	zplug "junegunn/fzf", \
+		use:"shell/*.zsh", \
+		defer:2
+	zplug "junegunn/fzf", \
+		use:"bin/fzf-tmux", \
+		as:command, \
+		defer:2
+
+	zplug "Tarrasch/zsh-autoenv"
+
+	zplug "paulirish/git-open", \
+		as:plugin
+
+	# zplug "sharkdp/bat",\
+	# 	as:command, \
+	# 	from:gh-r, \
+	# 	rename-to:bat
+
+	if [ "${OS}" = "Linux" ];
+	then
+		;
+	elif [ "${OS}" = "Darwin" ];
+	then
+		;
+	fi;
+
+	if ! zplug check --verbose;
+	then
+		echo;
+		zplug install || true;
+	fi;
+
+	zplug load
+	# else
+	# 	if ! [ -f ${DOTFILES_DIR}${ANTIGEN_DIR}/antigen.zsh ];
+	# 	then
+	# 		git clone https://github.com/zsh-users/antigen ${DOTFILES_DIR}${ANTIGEN_DIR}
+	# 		git -C $DOTFILES_DIR$ANTIGEN_DIR checkout develop
+	# 	fi;
+	# 	git -C $DOTFILES_DIR$ANTIGEN_DIR fetch origin develop 2> /dev/null
+	# 	git -C $DOTFILES_DIR$ANTIGEN_DIR diff --exit-code origin/develop
+	# 	if [ $? != 0 ];
+	# 	then
+	# 		echo "\e[32mUpdating antigen...\e[39m"
+	# 		git -C $DOTFILES_DIR$ANTIGEN_DIR merge origin/develop
+	# 	fi;
+
+	# 	source $DOTFILES_DIR$ANTIGEN_DIR/antigen.zsh
+
+	# 	# Pure theme
+	# 	antigen bundle mafredri/zsh-async
+	# 	antigen bundle sindresorhus/pure
+
+	# 	# Additional features
+	# 	antigen bundle zsh-users/zsh-autosuggestions
+	# 	antigen bundle zsh-users/zsh-completions
+	# 	antigen bundle zdharma/fast-syntax-highlighting
+
+	# 	#antigen bundle sobolevn/wakatime-zsh-plugin
+
+	# 	# Additional commands
+	# 	antigen bundle eendroroy/zed-zsh
+
+	# 	antigen apply
+	# fi;
 fi;
 
 #### asdf ####
@@ -359,7 +355,7 @@ command -v kubectl > /dev/null 2>&1 && source <(kubectl completion zsh)
 export TEMPLATES_PATH="${DOTFILES_DIR}/templates"
 
 # Add local dotfiles scripts to path
-export PATH="$PATH:$DOTFILES_DIR/scripts"
+export PATH="${PATH}:${DOTFILES_DIR}/scripts"
 
 # Source aws-cli auto-completion script
 if command -v aws_zsh_completer.sh > /dev/null 2>&1;
@@ -438,7 +434,3 @@ elif [ "$(asdf list krew 2>/dev/null)" != "0" ]
 then
   export PATH="$PATH:$(asdf where krew)/bin"
 fi
-
-# Fig post block. Keep at the bottom of this file.
-eval "$(fig init zsh post)"
-

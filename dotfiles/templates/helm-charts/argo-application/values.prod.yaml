@@ -1,0 +1,19 @@
+applications:
+
+# Tooling
+
+- applicationName: prod-metrics-server
+  applicationSpecs: |
+    project: prod-tooling
+    source:
+      repoURL: https://git.example.com/helm-charts-xxx
+      targetRevision: master
+      path: metrics-server
+      helm:
+        releaseName: metrics-server
+        valueFiles:
+        - ./values.prod.yaml
+    destination:
+      server: https://kube-api-server.example.com
+      namespace: tooling
+    syncPolicy: {}

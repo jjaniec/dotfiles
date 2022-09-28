@@ -1,0 +1,46 @@
+projectName: prod-tooling
+projectSpecs: |
+  description: Project regrouping all the tooling components of the prod cluster
+
+  # Allow manifests to deploy from any Git repos
+  sourceRepos:
+  - 'https://git.example.com/helm-chart-xxx'
+
+  destinations:
+    - namespace: 'argocd'
+      server: https://kubernetes.default.svc
+    - namespace: 'tooling'
+      server: https://kube-api-server.example.com
+    - namespace: 'kube-system'
+      server: https://kube-api-server.example.com
+
+  clusterResourceWhitelist:
+  - group: 'rbac.authorization.k8s.io'
+    kind: 'ClusterRole'
+  - group: 'rbac.authorization.k8s.io'
+    kind: 'ClusterRoleBinding'
+  - group: 'storage.k8s.io'
+    kind: 'CSIDriver'
+  - group: 'scheduling.k8s.io'
+    kind: 'PriorityClass'
+  - group: 'storage.k8s.io'
+    kind: 'StorageClass'
+  - group: 'policy'
+    kind: 'PodSecurityPolicy'
+  - group: 'apiregistration.k8s.io'
+    kind: 'APIService'
+  - group: 'admissionregistration.k8s.io'
+    kind: 'MutatingWebhookConfiguration'
+  - group: 'admissionregistration.k8s.io'
+    kind: 'ValidatingWebhookConfiguration'
+  - group: ''
+    kind: 'PersistentVolume'
+
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+
+  syncPolicy:
+    automated:
+      prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
+      selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).

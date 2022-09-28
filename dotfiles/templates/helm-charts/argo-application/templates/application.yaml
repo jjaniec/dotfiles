@@ -1,0 +1,14 @@
+{{- range .Values.applications }}
+{{- with . }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .applicationName }}
+  namespace: {{ $.Release.Namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+{{ indent 2 .applicationSpecs }}
+{{- end }}
+{{- end }}

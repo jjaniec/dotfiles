@@ -1,0 +1,25 @@
+applications:
+- applicationName: prod-app-of-apps
+  applicationSpecs: |
+    project: prod-tooling
+
+    source:
+      repoURL: https://git.example.com/helm-charts-xxx
+      targetRevision: master
+      path: argo-application
+      helm:
+        releaseName: prod-apps
+        valueFiles:
+        - ./values.prod.yaml
+
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: argocd
+
+    syncPolicy: {}
+
+    ignoreDifferences:
+    - group: 'argoproj.io'
+      kind: Application
+      jsonPointers:
+      - /spec/source/helm
