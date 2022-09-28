@@ -70,9 +70,6 @@
     "jenkinsfile": true
   },
   "redhat.telemetry.enabled": false,
-  "terminal.integrated.env.osx": {
-    "FIG_NEW_SESSION": "1"
-  },
   "security.workspace.trust.untrustedFiles": "open",
   "window.zoomLevel": -1,
   "editor.accessibilitySupport": "off",
