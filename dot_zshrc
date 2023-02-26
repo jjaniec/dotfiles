@@ -205,7 +205,6 @@ fi;
 
 #### asdf ####
 
-export ASDF_CONFIG_FILE="${DOTFILES_DIR}/asdf/asdfrc"
 export ASDF_DEFAULT_TOOL_VERSIONS_FILENAME=".tool-versions"
 export ASDF_DIR="$HOME/.asdf"
 export ASDF_DATA_DIR="$HOME/.asdf"
@@ -355,7 +354,7 @@ command -v kubectl > /dev/null 2>&1 && source <(kubectl completion zsh)
 export TEMPLATES_PATH="${HOME}/dotfiles/templates"
 
 # Add local dotfiles scripts to path
-export SCRIPTS_PATH="${HOME}/dotfiles/scripts"
+export SCRIPTS_PATH="${HOME}/dotfiles/scripts:${HOME}/env"
 export PATH="${PATH}:${SCRIPTS_PATH}"
 
 # Source aws-cli auto-completion script
