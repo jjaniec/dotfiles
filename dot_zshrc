@@ -53,21 +53,6 @@ then
 	source ~/42_dotfiles/.zshrc
 fi;
 
-# # Auto-update dotfiles if new commits found
-
-# if [ -n "$DOTFILES_DIR" ];
-# then
-# 	DOTFILES_BRANCH=$(git -C $DOTFILES_DIR name-rev --name-only HEAD)
-
-# 	git -C $DOTFILES_DIR fetch origin $DOTFILES_BRANCH > /dev/null 2>&1
-# 	git -C $DOTFILES_DIR diff --exit-code master...origin/$DOTFILES_BRANCH > /dev/null 2>&1
-# 	if [ $? != 0 ];
-# 	then
-# 		echo "\e[32mRemote has new commits ! Updating ...\e[39m"
-# 		git -C $DOTFILES_DIR merge origin/$DOTFILES_BRANCH
-# 	fi;
-# fi;
-
 #### Zsh plugins ####
 
 if [ -n "$DOTFILES_DIR" ];
@@ -217,6 +202,7 @@ function asdf_init_global_plugins() {
 	asdf plugin add bat
 	asdf plugin add buildpack
 	asdf plugin add container-diff
+	asdf plugin add dyff
 	asdf plugin add eksctl
 	asdf plugin add hadolint
 	asdf plugin add helm
@@ -303,6 +289,13 @@ export SERVERLESS_PLATFORM_VENDOR=aws
 
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias gs="git status"
+alias gd="git diff"
+alias gds="git diff --staged"
+alias gb="git branch"
+alias gc="git checkout"
+alias gcb="git checkout -b"
+alias gp="git push"
+alias gau="git add -u"
 alias psc="ps xawf -eo pid,user,cgroup,args"
 alias vcat="/bin/cat"
 alias l='ls -laG'
