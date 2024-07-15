@@ -1,4 +1,4 @@
-#### Setup
+### Setup
 
 # set -o errexit
 # set -o pipefail
@@ -295,7 +295,15 @@ alias gb="git branch"
 alias gc="git checkout"
 alias gcb="git checkout -b"
 alias gp="git push"
+alias gpull="git pull"
+alias ga="git add"
 alias gau="git add -u"
+#alias gcm="git commit -m"
+function gcm {
+  git commit -m "${@}"
+}
+alias grs="git restore --staged"
+
 alias psc="ps xawf -eo pid,user,cgroup,args"
 alias vcat="/bin/cat"
 alias l='ls -laG'
