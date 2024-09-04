@@ -22,6 +22,9 @@ setopt autopushd
 # Completion system
 autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line # Bash-like command-and-edit readline for zle
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'	# Case insensitive auto-completion
 zstyle ':completion:*' menu select=2
@@ -46,20 +49,10 @@ then
 	source ${ENV_FILE}
 fi;
 
-# Source 42 specific dotfiles
-if [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ] && [ -f ~/42_dotfiles ];
-then
-	source ~/.brewconfig
-	source ~/42_dotfiles/.zshrc
-fi;
-
 #### Zsh plugins ####
 
 if [ -n "$DOTFILES_DIR" ];
 then
-	# if command -v awk > /dev/null && ! [ $(hostname | grep -E 'e[1-9]{1,2}r[1-9]{1,2}p[1-9]{1,2}.42.fr') ];
-
-	# then
 	export ZPLUG_HOME=${DOTFILES_DIR}${ZPLUG_DIR}/.zplug
 
 	if ! [ -d ${ZPLUG_HOME} ];
@@ -68,54 +61,70 @@ then
 	fi;
 
 	source ${ZPLUG_HOME}/init.zsh
+
+
 	zplug 'zplug/zplug', \
 		hook-build:'zplug --self-manage'
 
-	zplug "mafredri/zsh-async", \
-		from:github, \
-		depth:1
+	# Theme
+	zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
 	zplug "sindresorhus/pure", \
 		use:pure.zsh, \
 		from:github, \
 		as:theme, \
 		depth:1
 
+	# ZSH wide completions
 	zplug "zsh-users/zsh-autosuggestions", \
 		from:github, \
 		depth:1
 	zplug "zsh-users/zsh-completions", \
 		from:github, \
 		depth:1
+	# zplug "Myzel394/zsh-copilot", \
+	# 	from:github, \
+	# 	use:"zsh-copilot.plugin.zsh", \
+	# 	depth:1, \
+	# 	as:command DOES NOT WORK
 	zplug "zdharma-continuum/fast-syntax-highlighting", \
 		from:github, \
 		depth:1
 
-	# zplug "plugins/asdf", \
-	# 	from:oh-my-zsh
+	# Package manager
+	zplug "plugins/asdf", \
+		from:oh-my-zsh
 
+	# Daily tools additional completions
 	zplug "ahmetb/kubectl-aliases", \
 		use:.kubectl_aliases
 	zplug "plugins/aws", \
 		from:oh-my-zsh
-	zplug "djui/alias-tips", \
-		from:github
+	zplug "plugins/helm", \
+		from:oh-my-zsh
+	zplug "plugins/gitfast", \
+		from:oh-my-zsh
+	zplug "plugins/kubectl", \
+		from:oh-my-zsh
+	zplug "plugins/npm", \
+		from:oh-my-zsh
+	zplug "plugins/pip", \
+		from:oh-my-zsh
+	# zplug "plugins/sudo", \
+	# 	from:oh-my-zsh
+	zplug "plugins/ssh", \
+		from:oh-my-zsh
 
+	# Faster cd
 	zplug "rupa/z", \
 		from:github, \
 		use:"z.sh", \
 		depth:1
-
 	zplug "b4b4r07/enhancd", \
 		from:github, \
 		use:"init.sh", \
 		depth:1
 
-	zplug "raylee/tldr", \
-		from:github, \
-		as:command, \
-		use:"tldr", \
-		depth:1
-
+	# Utils
 	# zplug "junegunn/fzf-bin", \
 	# 	from:gh-r, \
 	# 	as:command, \
@@ -129,8 +138,6 @@ then
 		as:command, \
 		defer:2
 
-	zplug "Tarrasch/zsh-autoenv"
-
 	zplug "paulirish/git-open", \
 		as:plugin
 
@@ -139,13 +146,14 @@ then
 	# 	from:gh-r, \
 	# 	rename-to:bat
 
-	if [ "${OS}" = "Linux" ];
-	then
-		;
-	elif [ "${OS}" = "Darwin" ];
-	then
-		;
-	fi;
+	# OS specific plugins
+	# if [ "${OS}" = "Linux" ];
+	# then
+	# 	;
+	# elif [ "${OS}" = "Darwin" ];
+	# then
+	# 	;
+	# fi;
 
 	if ! zplug check --verbose;
 	then
@@ -154,38 +162,6 @@ then
 	fi;
 
 	zplug load
-	# else
-	# 	if ! [ -f ${DOTFILES_DIR}${ANTIGEN_DIR}/antigen.zsh ];
-	# 	then
-	# 		git clone https://github.com/zsh-users/antigen ${DOTFILES_DIR}${ANTIGEN_DIR}
-	# 		git -C $DOTFILES_DIR$ANTIGEN_DIR checkout develop
-	# 	fi;
-	# 	git -C $DOTFILES_DIR$ANTIGEN_DIR fetch origin develop 2> /dev/null
-	# 	git -C $DOTFILES_DIR$ANTIGEN_DIR diff --exit-code origin/develop
-	# 	if [ $? != 0 ];
-	# 	then
-	# 		echo "\e[32mUpdating antigen...\e[39m"
-	# 		git -C $DOTFILES_DIR$ANTIGEN_DIR merge origin/develop
-	# 	fi;
-
-	# 	source $DOTFILES_DIR$ANTIGEN_DIR/antigen.zsh
-
-	# 	# Pure theme
-	# 	antigen bundle mafredri/zsh-async
-	# 	antigen bundle sindresorhus/pure
-
-	# 	# Additional features
-	# 	antigen bundle zsh-users/zsh-autosuggestions
-	# 	antigen bundle zsh-users/zsh-completions
-	# 	antigen bundle zdharma/fast-syntax-highlighting
-
-	# 	#antigen bundle sobolevn/wakatime-zsh-plugin
-
-	# 	# Additional commands
-	# 	antigen bundle eendroroy/zed-zsh
-
-	# 	antigen apply
-	# fi;
 fi;
 
 #### asdf ####
@@ -198,10 +174,11 @@ function asdf_init_global_plugins() {
 	cp ${DOTFILES_DIR}/asdf/tool-versions $HOME/.tool-versions
 	asdf plugin add aws-iam-authenticator
 	asdf plugin add awscli
-	asdf plugin add arkade
 	asdf plugin add bat
 	asdf plugin add buildpack
 	asdf plugin add container-diff
+	asdf plugin add cilium-cli
+	asdf plugin add delta
 	asdf plugin add dyff
 	asdf plugin add eksctl
 	asdf plugin add hadolint
@@ -209,12 +186,15 @@ function asdf_init_global_plugins() {
 	asdf plugin add krew
 	asdf plugin add k9s
 	asdf plugin add kubectl
+	asdf plugin add kubeconform
 	asdf plugin add neovim
 	asdf plugin add nodejs
 	asdf plugin add packer
 	asdf plugin add pre-commit
 	asdf plugin add python
 	asdf plugin add scaleway-cli
+	asdf plugin add shellcheck
+	asdf plugin add skaffold
 	asdf plugin add terraform
 	asdf plugin add tmux
 	asdf plugin add yarn
@@ -238,9 +218,6 @@ then
 	asdf_init_global_plugins
 fi;
 . $HOME/.asdf/asdf.sh
-
-# append completions to fpath
-fpath=(${ASDF_DIR}/completions $fpath)
 
 #### Git config ####
 
@@ -267,6 +244,8 @@ fi;
 
 #### Aliases and exports ####
 
+export EDITOR="nano"
+
 preexec_functions=()
 
 function expand_aliases {
@@ -284,8 +263,6 @@ export PATH="$PATH:$DOTFILES_DIR/bin"
 
 # Add .local/bin to path
 export PATH="$PATH:$HOME/.local/bin"
-
-export SERVERLESS_PLATFORM_VENDOR=aws
 
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias gs="git status"
@@ -312,14 +289,15 @@ alias kruncurl='kubectl run -it --restart=Never --rm --image=appropriate/curl cu
 alias aws_sts_export_assume_role.sh="source ${DOTFILES_DIR}/scripts/aws_sts_export_assume_role.sh"
 alias aws_clear_env.sh="source ${DOTFILES_DIR}/scripts/aws_clear_env.sh"
 alias aws_ec2_describe_instances_table='aws ec2 describe-instances  --query '"\"Reservations[*].Instances[*].{name: Tags[?Key=='Name'] | [0].Value, instance_id: InstanceId, ip_address: PrivateIpAddress, state: State.Name}\""' --output table'
+alias commitgpt="npx commitgpt"
 
-if [ "$(uname -s)" = "Linux" ];
-then
-	;
-elif [ "$(uname -s)" = "Darwin" ];
-then
-	;
-fi;
+# if [ "$(uname -s)" = "Linux" ];
+# then
+# 	;
+# elif [ "$(uname -s)" = "Darwin" ];
+# then
+# 	;
+# fi;
 
 export AWS_DEFAULT_REGION='eu-west-1'
 
@@ -329,7 +307,7 @@ export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # Enable bat preview for fzf
-export FZF_DEFAULT_OPTS="--ansi --preview-window 'right:50%' --color=dark --border --preview \"fzf_preview.sh {}\""
+export FZF_DEFAULT_OPTS="--ansi --preview-window 'top:50%' --color=dark --border --preview \"fzf_preview.sh {}\""
 
 # Enable coloration in less
 export LESS_TERMCAP_mb=$'\E[01;32m'
@@ -346,8 +324,20 @@ export ENHANCD_FILTER=fzf:fzy
 
 #### Load completions
 
-# Kubectl
-command -v kubectl > /dev/null 2>&1 && source <(kubectl completion zsh)
+# # Kubectl
+# command -v kubectl > /dev/null 2>&1 && source <(kubectl completion zsh)
+
+#### Additional Key bindings
+
+bindkey '^R' history-incremental-search-backward
+bindkey ';2D' backward-word
+bindkey '[D' backward-word
+bindkey ';2C' forward-word
+bindkey '[C' forward-word
+bindkey ';2A' beginning-of-line
+bindkey '[A' beginning-of-line
+bindkey ';2B' end-of-line
+bindkey '[B' end-of-line
 
 #### Scripts ####
 
@@ -359,17 +349,17 @@ export SCRIPTS_PATH="${HOME}/dotfiles/scripts:${HOME}/env"
 export PATH="${PATH}:${SCRIPTS_PATH}"
 
 # Source aws-cli auto-completion script
-if command -v aws_zsh_completer.sh > /dev/null 2>&1;
-then
-	source aws_zsh_completer.sh
-fi;
+# if command -v aws_zsh_completer.sh > /dev/null 2>&1;
+# then
+# 	source aws_zsh_completer.sh
+# fi;
 
 # Enable pyenv if present
-if command -v pyenv > /dev/null 2>&1;
-then
-	eval "$(pyenv init -)"
-	eval "$(pipenv --completion)"
-fi;
+# if command -v pyenv > /dev/null 2>&1;
+# then
+# 	eval "$(pyenv init -)"
+# 	eval "$(pipenv --completion)"
+# fi;
 
 # Clone repo and cd into it
 clone_repo() {
@@ -403,16 +393,16 @@ aws_ssm_start_session() {
 	aws ssm start-session --target $(echo ${TABLE} | cut -d '|' -f2 | tr -d ' ')
 }
 
-command -v skbn > /dev/null 2>&1
-if [ $? -ne 0 ];
-then
-skbn() {
-  docker run \
-    --rm \
-    -it \
-    -v $HOME/.aws:'$HOME/.aws'
-}
-fi;
+# command -v skbn > /dev/null 2>&1
+# if [ $? -ne 0 ];
+# then
+# skbn() {
+#   docker run \
+#     --rm \
+#     -it \
+#     -v $HOME/.aws:'$HOME/.aws'
+# }
+# fi;
 
 # Set git user.email / user.name
 
@@ -420,11 +410,11 @@ fi;
 
 # Set GOPATH & update PATH if go is installed
 
-if command -v go > /dev/null 2>&1;
-then
-	export GOPATH=$(go env GOPATH)
-	export PATH="$PATH:$GOPATH/bin"
-fi
+# if command -v go > /dev/null 2>&1;
+# then
+# 	export GOPATH=$(go env GOPATH)
+# 	export PATH="$PATH:$GOPATH/bin"
+# fi
 
 # Set krew plugins path in $PATH
 
@@ -434,4 +424,10 @@ then
 elif [ "$(asdf list krew 2>/dev/null)" != "0" ]
 then
   export PATH="$PATH:$(asdf where krew)/bin"
+fi
+
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+if [ -d "$HOME/.zsh-copilot" ];
+then
+  source ~/.zsh-copilot/zsh-copilot.plugin.zsh 2>/dev/null
 fi
