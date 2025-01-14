@@ -261,8 +261,19 @@ preexec_functions+=expand_aliases
 # Add dotfiles/bin to path
 export PATH="$PATH:$DOTFILES_DIR/bin"
 
-# Add .local/bin to path
+# Add additional directories to path
 export PATH="$PATH:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.apigeecli/bin"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+## Krew plugins
+  if [ -d "$HOME/.krew" ];
+  then
+    export PATH="$PATH:${KREW_ROOT:-$HOME/.krew}/bin"
+  elif [ "$(asdf list krew 2>/dev/null)" != "0" ]
+  then
+    export PATH="$PATH:$(asdf where krew)/bin"
+  fi
 
 alias glog="git log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'"
 alias gs="git status"
@@ -275,9 +286,9 @@ alias gp="git push"
 alias gpull="git pull"
 alias ga="git add"
 alias gau="git add -u"
-#alias gcm="git commit -m"
+#alias gcm="git commit -S -m"
 function gcm {
-  git commit -m "${@}"
+  git commit -S -m "${@}"
 }
 alias grs="git restore --staged"
 
@@ -416,17 +427,6 @@ aws_ssm_start_session() {
 # 	export PATH="$PATH:$GOPATH/bin"
 # fi
 
-# Set krew plugins path in $PATH
-
-if [ -d "$HOME/.krew" ];
-then
-  export PATH="$PATH:${KREW_ROOT:-$HOME/.krew}/bin"
-elif [ "$(asdf list krew 2>/dev/null)" != "0" ]
-then
-  export PATH="$PATH:$(asdf where krew)/bin"
-fi
-
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 if [ -d "$HOME/.zsh-copilot" ];
 then
   source ~/.zsh-copilot/zsh-copilot.plugin.zsh 2>/dev/null
